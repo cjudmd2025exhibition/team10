@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/header.css">
+        <link rel="stylesheet" href="./css/sub.css">
+        <!-- Link Swiper's CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+        <!-- Pretendard Font -->
+        <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+        <title>MOONY_Moonphase</title>
+    </head>
+    <body>
+        <!-- ============================================ -->
+        <!-- HEADER START - 다른 페이지 복사 시 이 영역만 복사 -->
+        <!-- ============================================ -->
+        
+        <!-- Menu Overlay -->
+        <div class="menu-overlay"></div>
+    
+        <!-- Header -->
+        <header>
+            <div class="head-container">
+            <!-- Logo -->
+            <a href="../index.html" class="header-logo-link">
+                <img src="../img/작은 로고.png" alt="로고" class="header-logo">
+            </a>
+                
+                <!-- Mobile Menu Button -->
+                <button class="menu-btn" aria-label="메뉴">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+    
+            <!-- Navigation -->
+            <nav class="nav">
+                <a href="../sub/sub.html" class="nav-link nav-link-1">달의 위상?</a>
+                <a href="../info/info.html" class="nav-link nav-link-2">다양한 달의 정보</a>
+                <a href="../quiz/quiz.html" class="nav-link nav-link-3">달 관련 퀴즈</a>
+                <a href="../diary/diary.html" class="nav-link nav-link-4">달 관찰 일지 작성</a>
+                <!-- Mobile Login Button (inside nav) -->
+                <button class="login-btn login-btn-mobile" onclick="window.location.href='../login/login.html'">로그인</button>
+                <!-- Mobile Nickname Display -->
+                <div class="user-nickname-mobile" id="userNicknameMobile"></div>
+            </nav>
+
+            <!-- Desktop Login Button -->
+            <button class="login-btn login-btn-desktop" onclick="window.location.href='../login/login.html'">로그인</button>
+            <!-- Desktop Nickname Display -->
+            <div class="user-nickname-desktop" id="userNicknameDesktop"></div>
+            </div>
+        </header>
+        <!-- End Header -->
+    
+        <!-- Header Script -->
+        <script>
+            // Mobile menu toggle
+            const menuBtn = document.querySelector('.menu-btn');
+            const nav = document.querySelector('.nav');
+            const overlay = document.querySelector('.menu-overlay');
+            
+            menuBtn.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                menuBtn.classList.toggle('active');
+                overlay.classList.toggle('active');
+            });
+    
+            // 오버레이 클릭 시 메뉴 닫기
+            overlay.addEventListener('click', () => {
+                nav.classList.remove('active');
+                menuBtn.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            // 닉네임 표시 로직 (데스크톱만)
+            function updateHeaderWithNickname() {
+                const userNickname = localStorage.getItem('userNickname');
+                const loginBtnDesktop = document.querySelector('.login-btn-desktop');
+                const nicknameDesktop = document.getElementById('userNicknameDesktop');
+                
+                if (userNickname) {
+                    // 닉네임이 있으면 데스크톱 로그인 버튼 숨기고 닉네임 표시
+                    loginBtnDesktop.classList.add('hidden');
+                    nicknameDesktop.textContent = userNickname;
+                    nicknameDesktop.classList.add('show');
+                } else {
+                    // 닉네임이 없으면 로그인 버튼 표시
+                    loginBtnDesktop.classList.remove('hidden');
+                    nicknameDesktop.classList.remove('show');
+                }
+            }
+            
+            // 페이지 로드 시 닉네임 확인
+            updateHeaderWithNickname();
+
+            // ===== 사용자 활동 추적 및 자동 로그아웃 (5분) =====
+            let inactivityTimer;
+            const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5분
+
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(() => {
+                    // 5분간 활동이 없으면 닉네임 삭제 및 UI 업데이트
+                    localStorage.removeItem('userNickname');
+                    updateHeaderWithNickname();
+                    if (typeof updateLogoutButton === 'function') {
+                        updateLogoutButton();
+                    }
+                }, INACTIVITY_TIMEOUT);
+            }
+
+            // 사용자 활동 감지 이벤트들
+            ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'].forEach(event => {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+
+            // 페이지 로드 시 타이머 시작
+            resetInactivityTimer();
+        </script>
+    
+        <!-- ============================================ -->
+        <!-- HEADER END -->
+        <!-- ============================================ -->
+    
+        <!-- 로그아웃 버튼 (닉네임이 있을 때만 표시) -->
+        <button class="logout-btn" id="logoutBtn" onclick="handleLogout()" aria-label="로그아웃">
+            <span>&times;</span>
+        </button>
+
+        <script>
+            // 로그아웃 버튼 표시/숨김 업데이트
+            function updateLogoutButton() {
+                const userNickname = localStorage.getItem('userNickname');
+                const logoutBtn = document.getElementById('logoutBtn');
+                
+                if (userNickname) {
+                    logoutBtn.classList.add('show');
+                } else {
+                    logoutBtn.classList.remove('show');
+                }
+            }
+
+            // 로그아웃 처리
+            function handleLogout() {
+                if (confirm('로그아웃 하시겠습니까?')) {
+                    localStorage.removeItem('userNickname');
+                    updateHeaderWithNickname();
+                    updateLogoutButton();
+                }
+            }
+
+            // 페이지 로드 시 로그아웃 버튼 상태 업데이트
+            updateLogoutButton();
+        </script>
+
+        <!-- Swiper Container (페이지 전체 상호작용 영역) -->
+        <div class="swiper mySwiper">
+            <!-- Fixed Moon Phase Images (Swiper 안으로 이동) -->
+            <div class="moon-phase-images">
+                <img src="./img/신월.webp" alt="신월" class="moon-img moon-img-1">
+                <img src="./img/초승달.webp" alt="초승달" class="moon-img moon-img-2">
+                <img src="./img/상현달.webp" alt="상현달" class="moon-img moon-img-3">
+                <img src="./img/상현망.webp" alt="상현망" class="moon-img moon-img-4">
+                <img src="./img/보름달.webp" alt="보름" class="moon-img moon-img-5">
+                <img src="./img/하현망.webp" alt="하현망" class="moon-img moon-img-6">
+                <img src="./img/하현달.webp" alt="하현달" class="moon-img moon-img-7">
+                <img src="./img/그믐달.webp" alt="그믐달" class="moon-img moon-img-8">
+            </div>
+
+            <!-- Fixed Navigation Icons (Swiper 안으로 이동) -->
+            <div class="fixed-nav-right">
+                <img src="../img/img.index/스크롤을 하세요.png" alt="스크롤" class="rotating-bg">
+                <img src="../img/img.index/화살표.png" alt="화살표" class="arrow-icon arrow-left">
+            </div>
+            
+            <div class="fixed-nav-left">
+                <img src="../img/img.index/스크롤을 하세요.png" alt="스크롤" class="rotating-bg">
+                <img src="../img/img.index/화살표.png" alt="화살표" class="arrow-icon arrow-right">
+            </div>
+
+            <!-- 실제 슬라이드 영역 -->
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="slide-content">
+                        <h1 class="moon-phase-title">삭(신월)</h1>
+                        <p class="moon-phase-description">달이 해와 같은 방향에 있어서 햇빛이 닿지 않아요.<br>그래서 달이 보이지 않고, 해와 함께 달이 떠올랐다가 함께 져요.</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-content">
+                        <h1 class="moon-phase-title">초승달</h1>
+                        <p class="moon-phase-description">해가 진 직후 서쪽 하늘에 얇은 초승달이 살짝 보여요.<br>달의 오른쪽이 조금 밝게 빛나기 시작해요!</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-content">
+                        <h1 class="moon-phase-title">상현달</h1>
+                        <p class="moon-phase-description">달의 오른쪽 반이 환하게 빛나요!<br>해가 진 뒤부터 자정 전가지 볼 수 있어요.</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-content">
+                        <h1 class="moon-phase-title">상현망</h1>
+                        <p class="moon-phase-description">상현과 보름달 사이에요, 달의 오른쪽이 대부분 밝게 보이나<br>완전히 둥글지는 않아요. 해가 진 뒤부터 밤늦게까지 볼 수 있어요.</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-content">
+                        <h1 class="moon-phase-title">보름(망)</h1>
+                        <p class="moon-phase-description">햇빛이 달의 앞면 전체에 비쳐서 둥근 달이 환하게 빛나요!<br>해가 질 때 뜨고, 밤새 볼 수 있어요.</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-content">
+                        <h1 class="moon-phase-title">하현망</h1>
+                        <p class="moon-phase-description">보름달과 하현달 사이, 달의 왼쪽이 대부분 밝게 남아 있어요.<br>한밤중부터 새벽까지 볼 수 있어요.</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-content">
+                        <h1 class="moon-phase-title">하현달</h1>
+                        <p class="moon-phase-description">달의 왼쪽 반쪽만 하얗게 보여요.<br>밤 늦게 뜨고, 새벽과 아침에 잘 볼 수 있어요.</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-content">
+                        <h1 class="moon-phase-title">그믐달</h1>
+                        <p class="moon-phase-description">해가 뜨기 전에 동쪽 하늘에 아주 얇은 달이 보여요.<br>달의 왼쪽만 조금 보여요.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Swiper Pagination (Swiper 안으로 이동) -->
+            <div class="swiper-pagination"></div>
+        </div>
+
+        <!-- Swiper JS -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <!-- Initialize Swiper -->
+        <script>
+            // 달 이미지 요소들
+            const moonImages = document.querySelectorAll('.moon-img');
+            
+            // 슬라이드 인덱스에 맞는 이미지 활성화 함수
+            function updateMoonImage(realIndex) {
+                // 모든 이미지 비활성화
+                moonImages.forEach(img => img.classList.remove('active'));
+                
+                // 현재 슬라이드에 해당하는 이미지 활성화 (0부터 시작하므로 realIndex 사용)
+                if (moonImages[realIndex]) {
+                    moonImages[realIndex].classList.add('active');
+                }
+            }
+            
+            var swiper = new Swiper(".mySwiper", {
+                direction: 'horizontal',
+                loop: true, // 무한 루프 활성화
+                speed: 500, // 슬라이드 이동 속도
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                mousewheel: {
+                    enabled: true,
+                    sensitivity: 1,
+                    releaseOnEdges: false,
+                },
+                keyboard: {
+                    enabled: true,
+                },
+                on: {
+                    init: function() {
+                        // 초기 로드 시 첫 번째 이미지 표시
+                        updateMoonImage(this.realIndex);
+                    },
+                    slideChange: function() {
+                        // 슬라이드 변경 시 해당 이미지 표시
+                        updateMoonImage(this.realIndex);
+                    }
+                }
+            });
+        </script>
+    
+</body>
+</html>

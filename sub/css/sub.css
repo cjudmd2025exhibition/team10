@@ -1,0 +1,253 @@
+/* === Responsive base variables (1920x1080 기준) === */
+:root {
+    /* 중앙 달 이미지 기본 크기 (1920px 기준 약 564px) */
+    --moon-size: 564px;
+    /* 좌우 고정 내비게이션 원형 아이콘 기본 크기 */
+    --nav-circle-size: 192px;
+}
+
+/* Fixed Moon Phase Images */
+.moon-phase-images {
+    position: fixed;
+    /* 헤더 아래로 살짝 내려오도록, 화면 비율에 따라 약간 조정 */
+    top: clamp(72px, 10vh, 108px);
+    left: 50%;
+    transform: translateX(-50%);
+    /* 크기를 뷰포트에 맞게 축소하되 1920*1080 기준 비율 유지 */
+    width: min(var(--moon-size), 80vw);
+    aspect-ratio: 1 / 1;
+    z-index: 50;
+}
+
+.moon-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.moon-img.active {
+    opacity: 1;
+}
+
+/* Fixed Navigation Icons */
+.fixed-nav-right,
+.fixed-nav-left {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--nav-circle-size);
+    height: var(--nav-circle-size);
+    z-index: 100;
+}
+
+.fixed-nav-right {
+    right: clamp(16px, 4vw, 80px);
+}
+
+.fixed-nav-left {
+    left: clamp(16px, 4vw, 80px);
+}
+
+.rotating-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 192px;
+    height: 192px;
+    animation: rotate360 60s linear infinite;
+}
+
+.arrow-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 42px;
+    width: auto;
+}
+
+.arrow-left {
+    transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.arrow-right {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+/* Rotation Animation */
+@keyframes rotate360 {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Swiper Container Styles */
+.swiper {
+    width: 100%;
+    /* 헤더 높이를 제외한 전체 높이(최소값으로 설정해 작은 화면 대응) */
+    min-height: calc(100vh - 80px);
+    margin-top: 80px; /* 헤더 높이만큼 여백 */
+    padding-bottom: 120px; /* 하단 페이지네이션과 텍스트 여유 공간 */
+    box-sizing: border-box;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+    padding-top: 40px;
+    box-sizing: border-box;
+}
+
+/* Slide Content Wrapper */
+.slide-content {
+    width: 100%;
+    text-align: center;
+}
+
+/* Moon Phase Title */
+.moon-phase-title {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600; /* SemiBold */
+    /* 1920 기준 40px, 작은 화면에서는 자동 축소 */
+    font-size: clamp(24px, 2.1vw, 40px);
+    /* 달 이미지 높이 + 여백만큼 아래에 배치 (대략 기존 680px 근처) */
+    margin-top: calc(var(--moon-size) + 120px);
+    margin-bottom: 0;
+    text-align: center;
+    color: #ffffff; /* 텍스트 색상 */
+}
+
+/* Moon Phase Description */
+.moon-phase-description {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400; /* Regular */
+    /* 1920 기준 20px, 작은 화면에서는 자동 축소 */
+    font-size: clamp(14px, 1.1vw, 20px);
+    margin-top: 16px;
+    margin-bottom: 0;
+    text-align: center;
+    line-height: 1.5;
+    color: #ffffff; /* 텍스트 색상 */
+    padding: 0 16px;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 페이지네이션 스타일 커스터마이징 */
+.swiper-pagination {
+    position: fixed !important;
+    bottom: 40px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    z-index: 100;
+}
+
+.swiper-pagination-bullet {
+    background: #666666 !important;
+    opacity: 1 !important;
+}
+
+.swiper-pagination-bullet-active {
+    background: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* =======================
+   Tablet (<= 1200px)
+   ======================= */
+@media (max-width: 1200px) {
+    :root {
+        --moon-size: 420px;
+        --nav-circle-size: 160px;
+    }
+
+    .swiper {
+        margin-top: 72px;
+        min-height: calc(100vh - 72px);
+        padding-bottom: 110px;
+    }
+
+    .moon-phase-title {
+        margin-top: calc(var(--moon-size) + 90px);
+    }
+
+    .moon-phase-description {
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .fixed-nav-right {
+        right: 32px;
+    }
+
+    .fixed-nav-left {
+        left: 32px;
+    }
+}
+
+/* =======================
+   Mobile (<= 768px)
+   ======================= */
+@media (max-width: 768px) {
+    :root {
+        --moon-size: 280px;
+        --nav-circle-size: 0px;
+    }
+
+    .moon-phase-images {
+        /* 헤더 아래로 조금 더 내려서 모바일 상단과 겹치지 않게 */
+        top: 120px;
+    }
+
+    .swiper {
+        margin-top: 72px;
+        min-height: calc(100vh - 72px);
+        padding-bottom: 96px;
+    }
+
+    .slide-content {
+        width: 100%;
+    }
+
+    .moon-phase-title {
+        /* 모바일에서 글자가 너무 크게 느껴지지 않도록 조정 */
+        margin-top: calc(var(--moon-size) + 56px);
+        font-size: clamp(22px, 6vw, 28px);
+        padding: 0 16px;
+    }
+
+    .moon-phase-description {
+        font-size: clamp(14px, 4vw, 18px);
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* 좌우 고정 내비게이션 아이콘은 모바일에서는 가독성을 위해 숨김 */
+    .fixed-nav-right,
+    .fixed-nav-left {
+        display: none;
+    }
+
+    .swiper-pagination {
+        bottom: 24px !important;
+    }
+}
