@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/header.css">
+        <link rel="stylesheet" href="./css/info.css">
+        <title>MOONY_INFO</title>
+    </head>
+    <body>
+        <!-- ============================================ -->
+        <!-- HEADER START - 다른 페이지 복사 시 이 영역만 복사 -->
+        <!-- ============================================ -->
+        
+        <!-- Menu Overlay -->
+        <div class="menu-overlay"></div>
+    
+        <!-- Header -->
+        <header>
+            <div class="head-container">
+            <!-- Logo -->
+            <a href="../index.html" class="header-logo-link">
+                <img src="../img/작은 로고.png" alt="로고" class="header-logo">
+            </a>
+                
+                <!-- Mobile Menu Button -->
+                <button class="menu-btn" aria-label="메뉴">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+    
+            <!-- Navigation -->
+            <nav class="nav">
+                <a href="../sub/sub.html" class="nav-link nav-link-1">달의 위상?</a>
+                <a href="../info/info.html" class="nav-link nav-link-2">다양한 달의 정보</a>
+                <a href="../quiz/quiz.html" class="nav-link nav-link-3">달 관련 퀴즈</a>
+                <a href="../diary/diary.html" class="nav-link nav-link-4">달 관찰 일지 작성</a>
+                <!-- Mobile Login Button (inside nav) -->
+                <button class="login-btn login-btn-mobile" onclick="window.location.href='../login/login.html'">로그인</button>
+                <!-- Mobile Nickname Display -->
+                <div class="user-nickname-mobile" id="userNicknameMobile"></div>
+            </nav>
+
+            <!-- Desktop Login Button -->
+            <button class="login-btn login-btn-desktop" onclick="window.location.href='../login/login.html'">로그인</button>
+            <!-- Desktop Nickname Display -->
+            <div class="user-nickname-desktop" id="userNicknameDesktop"></div>
+            </div>
+        </header>
+        <!-- End Header -->
+    
+        <!-- Header Script -->
+        <script>
+            // Mobile menu toggle
+            const menuBtn = document.querySelector('.menu-btn');
+            const nav = document.querySelector('.nav');
+            const overlay = document.querySelector('.menu-overlay');
+            
+            menuBtn.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                menuBtn.classList.toggle('active');
+                overlay.classList.toggle('active');
+            });
+    
+            // 오버레이 클릭 시 메뉴 닫기
+            overlay.addEventListener('click', () => {
+                nav.classList.remove('active');
+                menuBtn.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            // 닉네임 표시 로직 (데스크톱만)
+            function updateHeaderWithNickname() {
+                const userNickname = localStorage.getItem('userNickname');
+                const loginBtnDesktop = document.querySelector('.login-btn-desktop');
+                const nicknameDesktop = document.getElementById('userNicknameDesktop');
+                
+                if (userNickname) {
+                    // 닉네임이 있으면 데스크톱 로그인 버튼 숨기고 닉네임 표시
+                    loginBtnDesktop.classList.add('hidden');
+                    nicknameDesktop.textContent = userNickname;
+                    nicknameDesktop.classList.add('show');
+                } else {
+                    // 닉네임이 없으면 로그인 버튼 표시
+                    loginBtnDesktop.classList.remove('hidden');
+                    nicknameDesktop.classList.remove('show');
+                }
+            }
+            
+            // 페이지 로드 시 닉네임 확인
+            updateHeaderWithNickname();
+
+            // ===== 사용자 활동 추적 및 자동 로그아웃 (5분) =====
+            let inactivityTimer;
+            const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5분
+
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(() => {
+                    // 5분간 활동이 없으면 닉네임 삭제 및 UI 업데이트
+                    localStorage.removeItem('userNickname');
+                    updateHeaderWithNickname();
+                    if (typeof updateLogoutButton === 'function') {
+                        updateLogoutButton();
+                    }
+                }, INACTIVITY_TIMEOUT);
+            }
+
+            // 사용자 활동 감지 이벤트들
+            ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'].forEach(event => {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+
+            // 페이지 로드 시 타이머 시작
+            resetInactivityTimer();
+        </script>
+    
+        <!-- ============================================ -->
+        <!-- HEADER END -->
+        <!-- ============================================ -->
+    
+        <!-- 로그아웃 버튼 (닉네임이 있을 때만 표시) -->
+        <button class="logout-btn" id="logoutBtn" onclick="handleLogout()" aria-label="로그아웃">
+            <span>&times;</span>
+        </button>
+
+        <script>
+            // 로그아웃 버튼 표시/숨김 업데이트
+            function updateLogoutButton() {
+                const userNickname = localStorage.getItem('userNickname');
+                const logoutBtn = document.getElementById('logoutBtn');
+                
+                if (userNickname) {
+                    logoutBtn.classList.add('show');
+                } else {
+                    logoutBtn.classList.remove('show');
+                }
+            }
+
+            // 로그아웃 처리
+            function handleLogout() {
+                if (confirm('로그아웃 하시겠습니까?')) {
+                    localStorage.removeItem('userNickname');
+                    updateHeaderWithNickname();
+                    updateLogoutButton();
+                }
+            }
+
+            // 페이지 로드 시 로그아웃 버튼 상태 업데이트
+            updateLogoutButton();
+        </script>
+
+        <!-- Info Page Content -->
+        <div class="info-container">
+            <h1 class="info-title">
+                <img src="../img/MOONY.webp" alt="MOONY 로고">
+            </h1>
+            <h2 class="info-subtitle">달에 대한 정보는 얼마나 다양할까요?</h2>
+            
+            <!-- 왼쪽 카드 -->
+            <div class="info-card info-card-left" data-target="./info left/infoleft.html">
+                <div class="info-card-inner">
+                    <!-- 카드 앞면 -->
+                    <div class="info-card-front">
+                        <p class="info-box-moony">
+                            <img src="../img/MOONY.webp" alt="MOONY 로고">
+                        </p>
+                        <h3 class="info-box-title">달이 혼자서 해내는 현상</h3>
+                        <p class="info-hover-text">마우스를 올려놓아 보세요!</p>
+                    </div>
+                    <!-- 카드 뒷면 -->
+                    <div class="info-card-back">
+                        <div class="info-card-back-bg"></div>
+                        <p class="info-box-moony">
+                            <img src="../img/MOONY.webp" alt="MOONY 로고">
+                        </p>
+                        <h3 class="info-box-title">달이 혼자서 해내는 현상</h3>
+                        <p class="info-hover-text">마우스를 클릭해 보세요!</p>
+                        <p class="info-back-description">달은 스스로 빛을 내지 않지만, 태양빛을 받아 밤하늘에서 환하게 빛나요.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 중앙 카드 -->
+            <div class="info-card info-card-center" data-target="./infomid/infomid.html">
+                <div class="info-card-inner">
+                    <!-- 카드 앞면 -->
+                    <div class="info-card-front">
+                        <p class="info-box-moony">
+                            <img src="../img/MOONY.webp" alt="MOONY 로고">
+                        </p>
+                        <h3 class="info-box-title">달 때문에 지구에게는<br>어떤 일이 일어날까?</h3>
+                        <p class="info-hover-text">마우스를 올려놓아 보세요!</p>
+                    </div>
+                    <!-- 카드 뒷면 -->
+                    <div class="info-card-back">
+                        <div class="info-card-back-bg"></div>
+                        <p class="info-box-moony">
+                            <img src="../img/MOONY.webp" alt="MOONY 로고">
+                        </p>
+                        <h3 class="info-box-title">달 때문에 지구에게는<br>어떤 일이 일어날까?</h3>
+                        <p class="info-hover-text">마우스를 클릭해 보세요!</p>
+                        <p class="info-back-description">달은 지구가 기울어진 채 천천히 돌도록 도와 계절이 부드럽게 바뀌게 해줘요.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 오른쪽 카드 -->
+            <div class="info-card info-card-right" data-target="./inforight/inforight.html">
+                <div class="info-card-inner">
+                    <!-- 카드 앞면 -->
+                    <div class="info-card-front">
+                        <p class="info-box-moony">
+                            <img src="../img/MOONY.webp" alt="MOONY 로고">
+                        </p>
+                        <h3 class="info-box-title">달의 다른 이야기는<br>어떤게 있을까?</h3>
+                        <p class="info-hover-text">마우스를 올려놓아 보세요!</p>
+                    </div>
+                    <!-- 카드 뒷면 -->
+                    <div class="info-card-back">
+                        <div class="info-card-back-bg"></div>
+                        <p class="info-box-moony">
+                            <img src="../img/MOONY.webp" alt="MOONY 로고">
+                        </p>
+                        <h3 class="info-box-title">달의 다른 이야기는<br>어떤게 있을까?</h3>
+                        <p class="info-hover-text">마우스를 클릭해 보세요!</p>
+                        <p class="info-back-description">달은 아주 오래전부터 신화나 전설의 소재였어요. 대표적으로는 달토끼가 있어요.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Page Script -->
+        <script src="./js/info.js"></script>
+    </body>
+</html>

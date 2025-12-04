@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko" class="infoleft-page">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/header.css">
+    <link rel="stylesheet" href="./css/infoleft.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <title>MOONY_INFO_LEFT</title>
+</head>
+<body class="infoleft-page">
+    <!-- ============================================ -->
+    <!-- HEADER START - 다른 페이지 복사 시 이 영역만 복사 -->
+    <!-- ============================================ -->
+    
+    <!-- Menu Overlay -->
+    <div class="menu-overlay"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="head-container">
+            <!-- Logo -->
+            <a href="../../index.html" class="header-logo-link">
+                <img src="../../img/작은 로고.png" alt="로고" class="header-logo">
+            </a>
+            
+            <!-- Mobile Menu Button -->
+            <button class="menu-btn" aria-label="메뉴">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Navigation -->
+            <nav class="nav">
+                <a href="../../sub/sub.html" class="nav-link nav-link-1">달의 위상?</a>
+                <a href="../../info/info.html" class="nav-link nav-link-2">다양한 달의 정보</a>
+                <a href="../../quiz/quiz.html" class="nav-link nav-link-3">달 관련 퀴즈</a>
+                <a href="../../diary/diary.html" class="nav-link nav-link-4">달 관찰 일지 작성</a>
+                <!-- Mobile Login Button (inside nav) -->
+                <button class="login-btn login-btn-mobile" onclick="window.location.href='./login/login.html'">로그인</button>
+                <!-- Mobile Nickname Display -->
+                <div class="user-nickname-mobile" id="userNicknameMobile"></div>
+            </nav>
+
+            <!-- Desktop Login Button -->
+            <button class="login-btn login-btn-desktop" onclick="window.location.href='./login/login.html'">로그인</button>
+            <!-- Desktop Nickname Display -->
+            <div class="user-nickname-desktop" id="userNicknameDesktop"></div>
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- Header Script -->
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.querySelector('.menu-btn');
+        const nav = document.querySelector('.nav');
+        const overlay = document.querySelector('.menu-overlay');
+        
+        menuBtn.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            menuBtn.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        // 오버레이 클릭 시 메뉴 닫기
+        overlay.addEventListener('click', () => {
+            nav.classList.remove('active');
+            menuBtn.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // 닉네임 표시 로직 (데스크톱만)
+        function updateHeaderWithNickname() {
+            const userNickname = localStorage.getItem('userNickname');
+            const loginBtnDesktop = document.querySelector('.login-btn-desktop');
+            const nicknameDesktop = document.getElementById('userNicknameDesktop');
+            
+            if (userNickname) {
+                // 닉네임이 있으면 데스크톱 로그인 버튼 숨기고 닉네임 표시
+                loginBtnDesktop.classList.add('hidden');
+                nicknameDesktop.textContent = userNickname;
+                nicknameDesktop.classList.add('show');
+            } else {
+                // 닉네임이 없으면 로그인 버튼 표시
+                loginBtnDesktop.classList.remove('hidden');
+                nicknameDesktop.classList.remove('show');
+            }
+        }
+        
+        // 페이지 로드 시 닉네임 확인
+        updateHeaderWithNickname();
+
+        // ===== 사용자 활동 추적 및 자동 로그아웃 (5분) =====
+        let inactivityTimer;
+        const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5분
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                // 5분간 활동이 없으면 닉네임 삭제 및 UI 업데이트
+                localStorage.removeItem('userNickname');
+                updateHeaderWithNickname();
+                if (typeof updateLogoutButton === 'function') {
+                    updateLogoutButton();
+                }
+            }, INACTIVITY_TIMEOUT);
+        }
+
+        // 사용자 활동 감지 이벤트들
+        ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'].forEach(event => {
+            document.addEventListener(event, resetInactivityTimer, true);
+        });
+
+        // 페이지 로드 시 타이머 시작
+        resetInactivityTimer();
+    </script>
+
+    <!-- 로그아웃 버튼 (닉네임이 있을 때만 표시) -->
+    <button class="logout-btn" id="logoutBtn" onclick="handleLogout()" aria-label="로그아웃">
+        <span>&times;</span>
+    </button>
+
+    <script>
+        // 로그아웃 버튼 표시/숨김 업데이트
+        function updateLogoutButton() {
+            const userNickname = localStorage.getItem('userNickname');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            if (userNickname) {
+                logoutBtn.classList.add('show');
+            } else {
+                logoutBtn.classList.remove('show');
+            }
+        }
+
+        // 로그아웃 처리
+        function handleLogout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                localStorage.removeItem('userNickname');
+                updateHeaderWithNickname();
+                updateLogoutButton();
+            }
+        }
+
+        // 페이지 로드 시 로그아웃 버튼 상태 업데이트
+        updateLogoutButton();
+    </script>
+    <!-- ============================================ -->
+    <!-- HEADER END -->
+    <!-- ============================================ -->
+
+    <!-- ============================================ -->
+    <!-- CONTENT START -->
+    <!-- ============================================ -->
+
+    <main class="infoleft-container">
+        <h1 class="infoleft-title">달이 혼자서 해내는 현상</h1>
+        <p class="infoleft-subtitle">
+            밤마다 모양이 조금씩 달라지는 달이 혼자서 해내는 특별한 모습들을 한 곳에서 살펴봐요.
+        </p>
+
+        <section class="infoleft-list-wrapper" aria-label="달이 혼자서 해내는 현상 목록">
+            <div class="infoleft-list">
+                <!-- 삭 -->
+                <article class="infoleft-item" data-id="new-moon">
+                    <header class="infoleft-item-header">
+                        <h2 class="infoleft-item-title">달이 안 보이는 날 (삭)</h2>
+                        <span class="infoleft-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infoleft-item-body">
+                        <p>
+                            삭은 달이 하늘에 떠 있지만, 우리 눈에는 전혀 보이지 않는 날이에요.
+                            달이 태양이 있는 방향과 거의 같은 곳에 있어서, 달의 뒷면만 햇빛을 받고 앞면은 어두컴컴해요.
+                            그래서 우리는 아무리 하늘을 봐도 달이 안 보이는 거예요. 달이 없는 게 아니라 그냥 ‘숨은’ 거예요.
+                        </p>
+                        <p>
+                            이때는 달이 해처럼 낮에 떠 있고, 밤에는 없어서 더 잘 안 보여요.
+                            그래서 이 시기의 달을 ‘숨은 달’ 또는 ‘어두운 달’이라고 부르기도 해요.
+                            삭은 달이 새로운 달이 될 준비를 하는 시작점이에요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 초승달 -->
+                <article class="infoleft-item" data-id="crescent">
+                    <header class="infoleft-item-header">
+                        <h2 class="infoleft-item-title">달이 조금 보이는 날 (초승달)</h2>
+                        <span class="infoleft-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infoleft-item-body">
+                        <p>
+                            초승달은 삭 다음에 처음으로 달이 조금씩 보이기 시작하는 날이에요.
+                            마치 실처럼 아주 얇은 모양이고, 바나나 껍질 조각처럼 생겼어요.
+                            해가 진 뒤 서쪽 하늘에서 잠깐 나타났다 금방 사라지기 때문에 오래 볼 수는 없어요.
+                        </p>
+                        <p>
+                            이때 달은 아직 작고 얇지만, “이제 앞으로 점점 자라날 거예요!” 하고 알려주는 신호예요.
+                            초승달은 달의 시작을 보여주는 달이라서 새 달의 첫 모습이라고도 해요.
+                            옛날 사람들은 초승달을 보고 다음 달을 준비하거나 소원을 빌었다고 전해져요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 상현달 -->
+                <article class="infoleft-item" data-id="first-quarter">
+                    <header class="infoleft-item-header">
+                        <h2 class="infoleft-item-title">오른쪽 반달 (상현달)</h2>
+                        <span class="infoleft-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infoleft-item-body">
+                        <p>
+                            상현달은 초승달보다 훨씬 커져서, 달의 오른쪽 절반만 밝게 보이는 날이에요.
+                            달이 딱 절반만 보여서 ‘반달’이라고도 부르죠.
+                            이 시기에는 밤하늘에서 달을 꽤 오래 볼 수 있어서, 저녁 시간에 밖을 보면 밝은 반달이 떠 있는 모습을 자주 볼 수 있어요.
+                        </p>
+                        <p>
+                            상현달은 “달이 점점 커져서 보름달이 되고 있어요!”라는 중간 단계예요.
+                            오른쪽이 환하게 빛나니까 ‘오른쪽 반달’이라고 기억하면 쉽고,
+                            달력을 만들 때도 중요한 기준이 되는 달이에요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 보름달 -->
+                <article class="infoleft-item" data-id="full-moon">
+                    <header class="infoleft-item-header">
+                        <h2 class="infoleft-item-title">동그란 달 (보름달)</h2>
+                        <span class="infoleft-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infoleft-item-body">
+                        <p>
+                            보름달은 달이 가장 둥글고 동그랗게 꽉 찬 모습으로 빛나는 날이에요.
+                            마치 하얀 공처럼 반짝반짝 빛나고, 어두운 밤을 환하게 밝혀줘요.
+                            이때는 달 전체가 햇빛을 받아서 우리 눈에 아주 밝고 크게 보여요.
+                        </p>
+                        <p>
+                            해가 지면 동쪽 하늘에서 떠올라 밤새도록 하늘에 떠 있고,
+                            추석 같은 명절이나 특별한 날에 사람들이 자주 바라보는 달이에요.
+                            보름달은 달이 가장 힘이 센 날, 가장 밝은 날이라서 ‘달의 최고점’이라고도 불려요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 하현달 -->
+                <article class="infoleft-item" data-id="last-quarter">
+                    <header class="infoleft-item-header">
+                        <h2 class="infoleft-item-title">왼쪽 반달 (하현달)</h2>
+                        <span class="infoleft-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infoleft-item-body">
+                        <p>
+                            하현달은 보름달 이후에 달이 다시 작아지면서 왼쪽 절반만 남아 밝게 보이는 모습이에요.
+                            상현달은 오른쪽이 밝았는데, 하현달은 반대로 왼쪽이 밝아서 둘을 쉽게 구분할 수 있어요.
+                        </p>
+                        <p>
+                            하현달은 밤보다는 새벽이나 이른 아침 하늘에서 잘 보이고,
+                            달이 점점 사라져 다시 초승달이 될 준비를 하는 과정이에요.
+                            달의 변화가 한 바퀴를 돌아 다시 시작되는 느낌이 들어서,
+                            ‘달이 쉬는 시간’이라고 말하기도 해요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 그믐달 -->
+                <article class="infoleft-item" data-id="waning-crescent">
+                    <header class="infoleft-item-header">
+                        <h2 class="infoleft-item-title">거의 다 사라지고 조금만 남은 달 (그믐달)</h2>
+                        <span class="infoleft-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infoleft-item-body">
+                        <p>
+                            그믐달은 달이 거의 다 사라지고 실처럼 아주 조금만 남은 마지막 모습이에요.
+                            삭이 되기 바로 직전의 모습이라서 ‘달의 끝’이라고도 해요.
+                            이때의 달은 아주 이른 새벽에만 잠깐 나타났다 금방 사라져서,
+                            많은 사람들이 쉽게 보지 못하는 달이에요.
+                        </p>
+                        <p>
+                            그믐달은 마치 달이 조용히 쉬고 있는 것처럼 보이고,
+                            곧 아주 어두운 삭이 되었다가 다시 초승달로 태어나기 위해 준비하는 단계예요.
+                            그래서 그믐달은 ‘달의 마지막 인사’ 같은 느낌을 주는 달이에요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 달 주기 -->
+                <article class="infoleft-item" data-id="cycle">
+                    <header class="infoleft-item-header">
+                        <h2 class="infoleft-item-title">달 모양이 한 바퀴 바뀌는 데 걸리는 시간</h2>
+                        <span class="infoleft-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infoleft-item-body">
+                        <p>
+                            달은 모양이 계속 바뀌면서 한 바퀴를 도는 데 약 29~30일 정도 걸려요.
+                            이 기간을 ‘한 달’이라고 부르기도 해요.
+                            달은 삭 → 초승달 → 상현달 → 보름달 → 하현달 → 그믐달 순서로 모습이 바뀌고,
+                            다시 삭으로 돌아오는 과정을 반복해요.
+                        </p>
+                        <p>
+                            사람들은 이 반복되는 달의 변화를 보면서 날짜를 세고 달력을 만들었어요.
+                            옛날에는 시계가 없어도 하늘의 달만 보아도 지금이 어느 때쯤인지 알 수 있었어요.
+                            그래서 달은 하늘에서 날짜를 알려주는 자연 달력이라고 할 수 있어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 항상 같은 얼굴 -->
+                <article class="infoleft-item" data-id="same-face">
+                    <header class="infoleft-item-header">
+                        <h2 class="infoleft-item-title">달은 항상 같은 얼굴만 보여요</h2>
+                        <span class="infoleft-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infoleft-item-body">
+                        <p>
+                            우리는 달을 볼 때 항상 같은 모습, 같은 무늬만 보게 돼요.
+                            왜냐하면 달이 스스로 도는 속도(자전)와 지구를 한 바퀴 도는 속도(공전)가 거의 같기 때문이에요.
+                            그래서 달이 계속 돌고 있어도, 지구에서 보는 쪽은 항상 같은 면이에요.
+                        </p>
+                        <p>
+                            달의 뒷면도 분명히 있지만, 지구에서는 절대 볼 수 없어서 사람들은 그 부분을 ‘달의 숨겨진 얼굴’이라고 불러요.
+                            마치 달이 “나는 이 얼굴만 보여줄게!” 하고 약속한 것처럼,
+                            우리가 보는 달의 무늬는 언제 어디서 봐도 거의 변하지 않아요.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============================================ -->
+    <!-- CONTENT END -->
+    <!-- ============================================ -->
+
+    <script src="./infoleft.js"></script>
+</body>
+</html>

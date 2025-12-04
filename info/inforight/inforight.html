@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko" class="inforight-page">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/header.css">
+    <link rel="stylesheet" href="./inforight.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <title>MOONY_INFO_RIGHT</title>
+</head>
+<body class="inforight-page">
+    <!-- ============================================ -->
+    <!-- HEADER START - 다른 페이지 복사 시 이 영역만 복사 -->
+    <!-- ============================================ -->
+    
+    <!-- Menu Overlay -->
+    <div class="menu-overlay"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="head-container">
+            <!-- Logo -->
+            <a href="../../index.html" class="header-logo-link">
+                <img src="../../img/작은 로고.png" alt="로고" class="header-logo">
+            </a>
+            
+            <!-- Mobile Menu Button -->
+            <button class="menu-btn" aria-label="메뉴">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Navigation -->
+            <nav class="nav">
+                <a href="../../sub/sub.html" class="nav-link nav-link-1">달의 위상?</a>
+                <a href="../../info/info.html" class="nav-link nav-link-2">다양한 달의 정보</a>
+                <a href="../../quiz/quiz.html" class="nav-link nav-link-3">달 관련 퀴즈</a>
+                <a href="../../diary/diary.html" class="nav-link nav-link-4">달 관찰 일지 작성</a>
+                <!-- Mobile Login Button (inside nav) -->
+                <button class="login-btn login-btn-mobile" onclick="window.location.href='./login/login.html'">로그인</button>
+                <!-- Mobile Nickname Display -->
+                <div class="user-nickname-mobile" id="userNicknameMobile"></div>
+            </nav>
+
+            <!-- Desktop Login Button -->
+            <button class="login-btn login-btn-desktop" onclick="window.location.href='./login/login.html'">로그인</button>
+            <!-- Desktop Nickname Display -->
+            <div class="user-nickname-desktop" id="userNicknameDesktop"></div>
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- Header Script -->
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.querySelector('.menu-btn');
+        const nav = document.querySelector('.nav');
+        const overlay = document.querySelector('.menu-overlay');
+        
+        menuBtn.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            menuBtn.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        // 오버레이 클릭 시 메뉴 닫기
+        overlay.addEventListener('click', () => {
+            nav.classList.remove('active');
+            menuBtn.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // 닉네임 표시 로직 (데스크톱만)
+        function updateHeaderWithNickname() {
+            const userNickname = localStorage.getItem('userNickname');
+            const loginBtnDesktop = document.querySelector('.login-btn-desktop');
+            const nicknameDesktop = document.getElementById('userNicknameDesktop');
+            
+            if (userNickname) {
+                // 닉네임이 있으면 데스크톱 로그인 버튼 숨기고 닉네임 표시
+                loginBtnDesktop.classList.add('hidden');
+                nicknameDesktop.textContent = userNickname;
+                nicknameDesktop.classList.add('show');
+            } else {
+                // 닉네임이 없으면 로그인 버튼 표시
+                loginBtnDesktop.classList.remove('hidden');
+                nicknameDesktop.classList.remove('show');
+            }
+        }
+        
+        // 페이지 로드 시 닉네임 확인
+        updateHeaderWithNickname();
+
+        // ===== 사용자 활동 추적 및 자동 로그아웃 (5분) =====
+        let inactivityTimer;
+        const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5분
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                // 5분간 활동이 없으면 닉네임 삭제 및 UI 업데이트
+                localStorage.removeItem('userNickname');
+                updateHeaderWithNickname();
+                if (typeof updateLogoutButton === 'function') {
+                    updateLogoutButton();
+                }
+            }, INACTIVITY_TIMEOUT);
+        }
+
+        // 사용자 활동 감지 이벤트들
+        ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'].forEach(event => {
+            document.addEventListener(event, resetInactivityTimer, true);
+        });
+
+        // 페이지 로드 시 타이머 시작
+        resetInactivityTimer();
+    </script>
+
+    <!-- 로그아웃 버튼 (닉네임이 있을 때만 표시) -->
+    <button class="logout-btn" id="logoutBtn" onclick="handleLogout()" aria-label="로그아웃">
+        <span>&times;</span>
+    </button>
+
+    <script>
+        // 로그아웃 버튼 표시/숨김 업데이트
+        function updateLogoutButton() {
+            const userNickname = localStorage.getItem('userNickname');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            if (userNickname) {
+                logoutBtn.classList.add('show');
+            } else {
+                logoutBtn.classList.remove('show');
+            }
+        }
+
+        // 로그아웃 처리
+        function handleLogout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                localStorage.removeItem('userNickname');
+                updateHeaderWithNickname();
+                updateLogoutButton();
+            }
+        }
+
+        // 페이지 로드 시 로그아웃 버튼 상태 업데이트
+        updateLogoutButton();
+    </script>
+    <!-- ============================================ -->
+    <!-- HEADER END -->
+    <!-- ============================================ -->
+
+    <!-- ============================================ -->
+    <!-- CONTENT START -->
+    <!-- ============================================ -->
+    
+    <main class="inforight-container">
+        <h1 class="inforight-title">달의 다른 이야기는 어떤게 있을까?</h1>
+        <p class="inforight-subtitle">
+            달의 다른 이야기는 어떤게 있을까요? 같이 살펴봐요.
+        </p>
+
+        <section class="inforight-list-wrapper" aria-label="한국의 달 문화와 이야기 목록">
+            <div class="inforight-list">
+                <!-- 한국의 달 문화 개요 -->
+                <article class="inforight-item" data-id="korean-moon-culture">
+                    <header class="inforight-item-header">
+                        <h2 class="inforight-item-title">한국의 달 문화</h2>
+                        <span class="inforight-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="inforight-item-body">
+                        <p>
+                            옛날 한국 사람들은 달을 아주 소중하게 생각했어요.
+                            달은 하늘에 떠 있는 빛나는 공이 아니라,
+                            마음을 달래주고 소원을 빌 수 있는 특별한 존재라고 여겼어요.
+                        </p>
+                        <p>
+                            사람들은 달을 보며 농사 지을 시기를 정하고, 명절 날짜를 정하고,
+                            중요한 제사나 행사를 준비했어요.
+                            달빛이 밝은 밤에는 불을 많이 켜지 않아도 사람들이 서로 모여 이야기하거나
+                            노래하고 춤추며 놀기도 했어요.
+                            그래서 달은 한국에서 ‘빛’, ‘희망’, ‘행운’을 상징하는 중요한 친구 같은 존재였어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 달토끼 이야기 -->
+                <article class="inforight-item" data-id="moon-rabbit">
+                    <header class="inforight-item-header">
+                        <h2 class="inforight-item-title">달토끼 이야기</h2>
+                        <span class="inforight-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="inforight-item-body">
+                        <p>
+                            달을 자세히 보면 어두운 부분과 밝은 부분이 섞여 있어서,
+                            그 모양이 마치 토끼가 방아를 찧고 있는 모습처럼 보일 때가 있어요.
+                            그래서 옛날부터 사람들은 달에 토끼가 살고 있다고 상상했어요.
+                        </p>
+                        <p>
+                            이야기 속 달토끼는 절구에 방아를 찧으며 떡이나 약을 만든다고 해요.
+                            어떤 이야기에서는 그 약이 아픈 사람을 고쳐주는 약이라고도 하지요.
+                            착하고 따뜻한 토끼가 달에서 열심히 방아를 찧고 있다고 생각하면,
+                            달이 훨씬 더 친근하고 재미있게 느껴져요.
+                            이렇게 달은 그냥 돌덩이가 아니라,
+                            상상 속 친구가 사는 곳이 되기도 했어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 추석의 보름달과 소원 빌기 -->
+                <article class="inforight-item" data-id="chuseok-full-moon">
+                    <header class="inforight-item-header">
+                        <h2 class="inforight-item-title">추석의 보름달과 소원 빌기</h2>
+                        <span class="inforight-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="inforight-item-body">
+                        <p>
+                            추석은 한국에서 가장 큰 명절 중 하나예요.
+                            이 날 밤에는 가족들이 함께 모여 둥글고 환한 보름달을 바라보며 소원을 빌어요.
+                            보름달은 동그랗고 가득 차 있어서 풍요와 행복을 상징해요.
+                        </p>
+                        <p>
+                            사람들은 보름달을 보며
+                            “우리 가족 모두 건강하게 해 주세요”, “앞으로도 행복하게 지내게 해 주세요”
+                            하고 마음속으로 빌어요.
+                            예전에는 보름달이 ‘행운의 달’이라고 불리기도 해서,
+                            이 날에 비는 소원은 더 잘 이루어진다고 믿었어요.
+                            그래서 추석 밤의 달은 단순한 달이 아니라,
+                            가족과 마음을 나누는 아주 따뜻한 상징이 되었어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 월식과 괴물 설화 -->
+                <article class="inforight-item" data-id="monster-eclipse">
+                    <header class="inforight-item-header">
+                        <h2 class="inforight-item-title">월식과 괴물 설화</h2>
+                        <span class="inforight-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="inforight-item-body">
+                        <p>
+                            옛날에는 과학을 잘 모르던 시절이라,
+                            달이 갑자기 어두워지거나 사라지는 월식을 보면 사람들은 무서워했어요.
+                            그래서 “하늘에 있는 괴물이 달을 먹고 있다!”라고 생각했지요.
+                        </p>
+                        <p>
+                            사람들은 괴물을 쫓아내기 위해 집집마다 북을 치거나,
+                            냄비와 같은 물건을 두드리며 큰 소리를 냈어요.
+                            그러다 달이 다시 밝게 나타나면
+                            “우리가 달을 구해냈다!” 하고 기뻐했어요.
+                            실제로는 지구의 그림자 때문에 달이 가려진 것이지만,
+                            그 시절 사람들에게는 괴물이 등장하는 신비로운 이야기였어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 신라 소지왕과 까마귀 이야기 -->
+                <article class="inforight-item" data-id="soji-crow">
+                    <header class="inforight-item-header">
+                        <h2 class="inforight-item-title">신라 소지왕과 까마귀 이야기</h2>
+                        <span class="inforight-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="inforight-item-body">
+                        <p>
+                            신라 소지왕 때 전해 내려오는 흥미로운 이야기가 있어요.
+                            어느 날 왕에게 까마귀 한 마리가 편지를 물고 와서 떨어뜨렸다고 해요.
+                            왕이 그 편지를 읽고 큰 위험을 피할 수 있었다는 전설이 전해져요.
+                        </p>
+                        <p>
+                            사람들은 까마귀가 달빛 아래에서 왕을 도와준 것이라고 믿었어요.
+                            그래서 까마귀는 달과 함께 등장하는 ‘행운의 새’처럼 여겨지기도 했어요.
+                            이 이야기는 달빛, 까마귀, 그리고 왕을 지킨 기적 같은 사건이 어우러진
+                            신비로운 달 설화로 지금까지 전해지고 있어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 신라 경문왕과 연등 관람 -->
+                <article class="inforight-item" data-id="lantern-festival">
+                    <header class="inforight-item-header">
+                        <h2 class="inforight-item-title">신라 경문왕과 달빛 아래 연등 관람</h2>
+                        <span class="inforight-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="inforight-item-body">
+                        <p>
+                            신라 경문왕이 살았던 때, 사람들은 달이 가장 밝은 날 밤에
+                            수많은 등불을 켜고 모여 축제를 즐겼어요.
+                            이런 행사를 ‘연등회’라고 불렀어요.
+                        </p>
+                        <p>
+                            하늘에는 환한 달빛이, 땅 위에는 색색의 등불이 함께 빛나면서
+                            마치 별과 달이 땅으로 내려온 것 같은 풍경이 펼쳐졌어요.
+                            사람들은 그 아래에서 노래하고 춤추며 밤늦도록 즐겁게 지냈지요.
+                            그래서 “달은 하늘의 등불, 연등은 땅의 달빛”이라는 말도 생겼어요.
+                            달빛은 사람들을 한자리에 모이게 하고,
+                            서로 마음을 나누게 하는 따뜻한 역할을 했어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 한국인의 달과 우주관 -->
+                <article class="inforight-item" data-id="cosmos-view">
+                    <header class="inforight-item-header">
+                        <h2 class="inforight-item-title">한국인의 달과 우주관</h2>
+                        <span class="inforight-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="inforight-item-body">
+                        <p>
+                            옛날 한국 사람들은 달을 단순한 하늘의 돌덩이로 보지 않았어요.
+                            달은 신비롭고 신성한 장소라고 믿었고,
+                            특별한 영혼이나 신들이 머무는 곳이라고 생각하기도 했어요.
+                        </p>
+                        <p>
+                            어떤 사람들은 죽은 사람이 달이나 별이 되어 다시 태어난다고 믿었고,
+                            달이 꿈과 소원을 담아두는 세계라고 상상했어요.
+                            그래서 달은 새로운 시작, 희망, 위로를 상징하는 존재가 되었어요.
+                            하늘의 달을 바라보는 일은 곧, 눈에 보이지 않는 세상과
+                            마음속 깊은 세계를 떠올리는 시간이기도 했어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 문학과 예술 속의 달 -->
+                <article class="inforight-item" data-id="art-and-poetry">
+                    <header class="inforight-item-header">
+                        <h2 class="inforight-item-title">문학과 예술 속의 달</h2>
+                        <span class="inforight-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="inforight-item-body">
+                        <p>
+                            시, 동요, 노래, 그림 속에는 달이 아주 자주 등장해요.
+                            달은 혼자 하늘에 떠 있어서 외로운 마음을 표현하기도 하고,
+                            어두운 밤을 밝히는 모습 때문에 희망과 기다림을 상징하기도 해요.
+                        </p>
+                        <p>
+                            예술가들은 달을 보며 생각에 잠기거나,
+                            자신의 감정을 달빛에 빗대어 표현했어요.
+                            누군가는 “달은 하늘에 떠 있는 마음의 거울”이라고 말하기도 했어요.
+                            그래서 달은 사람의 기분과 이야기를 담아내는
+                            특별한 상징으로 오랫동안 사랑받고 있어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 달의 표면과 충돌구 -->
+                <article class="inforight-item" data-id="surface">
+                    <header class="inforight-item-header">
+                        <h2 class="inforight-item-title">달의 표면 (울퉁불퉁한 충돌구)</h2>
+                        <span class="inforight-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="inforight-item-body">
+                        <p>
+                            우리가 보는 달의 얼룩덜룩한 무늬는 그냥 그림이 아니에요.
+                            아주 오랜 시간 동안 달에 운석이나 소행성 같은 돌들이 부딪혀서
+                            생긴 커다란 구멍들이에요. 이런 자국을 ‘충돌구’라고 불러요.
+                        </p>
+                        <p>
+                            그래서 달 표면은 매끈하지 않고 울퉁불퉁해요.
+                            마치 오랜 세월을 지나면서 얼굴에 주름이 생긴 것처럼,
+                            달도 오랜 시간 동안 우주에서 일어난 일들을 몸에 그대로 간직하고 있는 거예요.
+                            달을 바라보면, 우주가 얼마나 오래되고 넓은 곳인지도 함께 떠올릴 수 있어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 달의 일반적인 정의 -->
+                <article class="inforight-item" data-id="definition">
+                    <header class="inforight-item-header">
+                        <h2 class="inforight-item-title">달의 일반적인 정의</h2>
+                        <span class="inforight-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="inforight-item-body">
+                        <p>
+                            달은 지구의 유일한 자연 위성이에요.
+                            ‘위성’이란, 지구처럼 큰 천체 주변을 돌면서 함께 움직이는 작은 천체를 말해요.
+                            달은 낮에는 햇빛을 받아 밝게 빛나고,
+                            밤에는 태양빛을 반사해서 우리 눈에 환하게 보이는 거예요.
+                        </p>
+                        <p>
+                            달은 태양계에서 다섯 번째로 큰 위성이고,
+                            지구의 바닷물, 생명, 기후에도 큰 영향을 주고 있어요.
+                            만약 달이 없다면, 바닷물의 밀물과 썰물도 지금과 많이 달라지고,
+                            밤하늘의 모습도 훨씬 어두워졌을 거예요.
+                            이렇게 달은 과학적으로도, 문화적으로도
+                            지구와 떼어 놓을 수 없는 아주 중요한 존재예요.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============================================ -->
+    <!-- CONTENT END -->
+    <!-- ============================================ -->
+    
+    <script src="./inforight.js"></script>
+</body>
+</html>

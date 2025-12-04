@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko" class="diarysave-page">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="../../css/style.css">
+        <link rel="stylesheet" href="../../css/header.css">
+        <link rel="stylesheet" href="./css/diarysave.css">
+        <title>MOONY_달관찰일지_저장</title>
+    </head>
+    <body class="diarysave-page">
+        <!-- ============================================ -->
+        <!-- HEADER START - 다른 페이지 복사 시 이 영역만 복사 -->
+        <!-- ============================================ -->
+        
+        <!-- Menu Overlay -->
+        <div class="menu-overlay"></div>
+    
+        <!-- Header -->
+        <header>
+            <div class="head-container">
+            <!-- Logo -->
+            <a href="../../index.html" class="header-logo-link">
+                <img src="../../img/작은 로고.png" alt="로고" class="header-logo">
+            </a>
+                
+                <!-- Mobile Menu Button -->
+                <button class="menu-btn" aria-label="메뉴">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+    
+            <!-- Navigation -->
+            <nav class="nav">
+                <a href="../../sub/sub.html" class="nav-link nav-link-1">달의 위상?</a>
+                <a href="../../info/info.html" class="nav-link nav-link-2">다양한 달의 정보</a>
+                <a href="../../quiz/quiz.html" class="nav-link nav-link-3">달 관련 퀴즈</a>
+                <a href="../diary.html" class="nav-link nav-link-4">달 관찰 일지 작성</a>
+                <!-- Mobile Login Button (inside nav) -->
+                <button class="login-btn login-btn-mobile" onclick="window.location.href='../../login/login.html'">로그인</button>
+                <!-- Mobile Nickname Display -->
+                <div class="user-nickname-mobile" id="userNicknameMobile"></div>
+            </nav>
+
+            <!-- Desktop Login Button -->
+            <button class="login-btn login-btn-desktop" onclick="window.location.href='../../login/login.html'">로그인</button>
+            <!-- Desktop Nickname Display -->
+            <div class="user-nickname-desktop" id="userNicknameDesktop"></div>
+            </div>
+        </header>
+        <!-- End Header -->
+    
+        <!-- Header Script -->
+        <script>
+            // Mobile menu toggle
+            const menuBtn = document.querySelector('.menu-btn');
+            const nav = document.querySelector('.nav');
+            const overlay = document.querySelector('.menu-overlay');
+            
+            menuBtn.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                menuBtn.classList.toggle('active');
+                overlay.classList.toggle('active');
+            });
+    
+            // 오버레이 클릭 시 메뉴 닫기
+            overlay.addEventListener('click', () => {
+                nav.classList.remove('active');
+                menuBtn.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            // 닉네임 표시 로직 (데스크톱만)
+            function updateHeaderWithNickname() {
+                const userNickname = localStorage.getItem('userNickname');
+                const loginBtnDesktop = document.querySelector('.login-btn-desktop');
+                const nicknameDesktop = document.getElementById('userNicknameDesktop');
+                
+                if (userNickname) {
+                    // 닉네임이 있으면 데스크톱 로그인 버튼 숨기고 닉네임 표시
+                    loginBtnDesktop.classList.add('hidden');
+                    nicknameDesktop.textContent = userNickname;
+                    nicknameDesktop.classList.add('show');
+                } else {
+                    // 닉네임이 없으면 로그인 버튼 표시
+                    loginBtnDesktop.classList.remove('hidden');
+                    nicknameDesktop.classList.remove('show');
+                }
+            }
+            
+            // 페이지 로드 시 닉네임 확인
+            updateHeaderWithNickname();
+
+            // ===== 사용자 활동 추적 및 자동 로그아웃 (5분) =====
+            let inactivityTimer;
+            const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5분
+
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(() => {
+                    // 5분간 활동이 없으면 닉네임 삭제 및 UI 업데이트
+                    localStorage.removeItem('userNickname');
+                    updateHeaderWithNickname();
+                    updateLogoutButton();
+                }, INACTIVITY_TIMEOUT);
+            }
+
+            // 사용자 활동 감지 이벤트들
+            ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'].forEach(event => {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+
+            // 페이지 로드 시 타이머 시작
+            resetInactivityTimer();
+            
+        </script>
+        <button class="logout-btn" id="logoutBtn" onclick="handleLogout()" aria-label="로그아웃">
+            <span>&times;</span>
+        </button>
+    
+        <script>
+            
+            // 로그아웃 버튼 표시/숨김 업데이트
+            function updateLogoutButton() {
+                const userNickname = localStorage.getItem('userNickname');
+                const logoutBtn = document.getElementById('logoutBtn');
+                
+                if (userNickname) {
+                    logoutBtn.classList.add('show');
+                } else {
+                    logoutBtn.classList.remove('show');
+                }
+            }
+    
+            // 로그아웃 처리
+            function handleLogout() {
+                if (confirm('로그아웃 하시겠습니까?')) {
+                    localStorage.removeItem('userNickname');
+                    updateHeaderWithNickname();
+                    updateLogoutButton();
+                }
+            }
+    
+            // 페이지 로드 시 로그아웃 버튼 상태 업데이트
+            updateLogoutButton();
+        </script>
+    
+        <!-- ============================================ -->
+        <!-- HEADER END -->
+        <!-- ============================================ -->
+    
+        <!-- 메인 컨텐츠 영역 -->
+        <main class="save-main">
+            <div class="save-container">
+                <!-- 좌측: 저장된 일지 목록 -->
+                <aside class="diary-list-section">
+                    <div class="diary-list-header">
+                        <h2 class="diary-list-title">저장된 관찰 일지</h2>
+                        <div class="diary-count" id="diaryCount">0개</div>
+                    </div>
+                    <div class="diary-list" id="diaryList">
+                        <!-- 저장된 일지 목록이 여기에 동적으로 추가됩니다 -->
+                        <div class="no-diary-message">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                                <path d="M19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16L21 8V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M17 21V13H7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M7 3V8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <p>저장된 관찰 일지가 없습니다</p>
+                        </div>
+                    </div>
+                </aside>
+                
+                <!-- 우측: 선택된 일지 내용 -->
+                <section class="diary-content-section">
+                    <div class="diary-content" id="diaryContent">
+                        <!-- 초기 상태: 일지를 선택하라는 메시지 -->
+                        <div class="select-diary-message">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <p>좌측 목록에서 일지를 선택해주세요</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+        
+        <!-- JavaScript -->
+        <script src="./js/diarysave.js"></script>
+    
+</body>
+</html>

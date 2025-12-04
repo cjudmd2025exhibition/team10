@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ko" class="infomid-page">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/header.css">
+    <link rel="stylesheet" href="./infomid.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <title>MOONY_INFO_MID</title>
+</head>
+<body class="infomid-page">
+    <!-- ============================================ -->
+    <!-- HEADER START - 다른 페이지 복사 시 이 영역만 복사 -->
+    <!-- ============================================ -->
+    
+    <!-- Menu Overlay -->
+    <div class="menu-overlay"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="head-container">
+            <!-- Logo -->
+            <a href="../../index.html" class="header-logo-link">
+                <img src="../../img/작은 로고.png" alt="로고" class="header-logo">
+            </a>
+            
+            <!-- Mobile Menu Button -->
+            <button class="menu-btn" aria-label="메뉴">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Navigation -->
+            <nav class="nav">
+                <a href="../../sub/sub.html" class="nav-link nav-link-1">달의 위상?</a>
+                <a href="../../info/info.html" class="nav-link nav-link-2">다양한 달의 정보</a>
+                <a href="../../quiz/quiz.html" class="nav-link nav-link-3">달 관련 퀴즈</a>
+                <a href="../../diary/diary.html" class="nav-link nav-link-4">달 관찰 일지 작성</a>
+                <!-- Mobile Login Button (inside nav) -->
+                <button class="login-btn login-btn-mobile" onclick="window.location.href='./login/login.html'">로그인</button>
+                <!-- Mobile Nickname Display -->
+                <div class="user-nickname-mobile" id="userNicknameMobile"></div>
+            </nav>
+
+            <!-- Desktop Login Button -->
+            <button class="login-btn login-btn-desktop" onclick="window.location.href='./login/login.html'">로그인</button>
+            <!-- Desktop Nickname Display -->
+            <div class="user-nickname-desktop" id="userNicknameDesktop"></div>
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- Header Script -->
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.querySelector('.menu-btn');
+        const nav = document.querySelector('.nav');
+        const overlay = document.querySelector('.menu-overlay');
+        
+        menuBtn.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            menuBtn.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        // 오버레이 클릭 시 메뉴 닫기
+        overlay.addEventListener('click', () => {
+            nav.classList.remove('active');
+            menuBtn.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // 닉네임 표시 로직 (데스크톱만)
+        function updateHeaderWithNickname() {
+            const userNickname = localStorage.getItem('userNickname');
+            const loginBtnDesktop = document.querySelector('.login-btn-desktop');
+            const nicknameDesktop = document.getElementById('userNicknameDesktop');
+            
+            if (userNickname) {
+                // 닉네임이 있으면 데스크톱 로그인 버튼 숨기고 닉네임 표시
+                loginBtnDesktop.classList.add('hidden');
+                nicknameDesktop.textContent = userNickname;
+                nicknameDesktop.classList.add('show');
+            } else {
+                // 닉네임이 없으면 로그인 버튼 표시
+                loginBtnDesktop.classList.remove('hidden');
+                nicknameDesktop.classList.remove('show');
+            }
+        }
+        
+        // 페이지 로드 시 닉네임 확인
+        updateHeaderWithNickname();
+
+        // ===== 사용자 활동 추적 및 자동 로그아웃 (5분) =====
+        let inactivityTimer;
+        const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5분
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                // 5분간 활동이 없으면 닉네임 삭제 및 UI 업데이트
+                localStorage.removeItem('userNickname');
+                updateHeaderWithNickname();
+                if (typeof updateLogoutButton === 'function') {
+                    updateLogoutButton();
+                }
+            }, INACTIVITY_TIMEOUT);
+        }
+
+        // 사용자 활동 감지 이벤트들
+        ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'].forEach(event => {
+            document.addEventListener(event, resetInactivityTimer, true);
+        });
+
+        // 페이지 로드 시 타이머 시작
+        resetInactivityTimer();
+    </script>
+
+    <!-- 로그아웃 버튼 (닉네임이 있을 때만 표시) -->
+    <button class="logout-btn" id="logoutBtn" onclick="handleLogout()" aria-label="로그아웃">
+        <span>&times;</span>
+    </button>
+
+    <script>
+        // 로그아웃 버튼 표시/숨김 업데이트
+        function updateLogoutButton() {
+            const userNickname = localStorage.getItem('userNickname');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            if (userNickname) {
+                logoutBtn.classList.add('show');
+            } else {
+                logoutBtn.classList.remove('show');
+            }
+        }
+
+        // 로그아웃 처리
+        function handleLogout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                localStorage.removeItem('userNickname');
+                updateHeaderWithNickname();
+                updateLogoutButton();
+            }
+        }
+
+        // 페이지 로드 시 로그아웃 버튼 상태 업데이트
+        updateLogoutButton();
+    </script>
+    <!-- ============================================ -->
+    <!-- HEADER END -->
+    <!-- ============================================ -->
+
+    <!-- ============================================ -->
+    <!-- CONTENT START -->
+    <!-- ============================================ -->
+    
+    <main class="infomid-container">
+        <h1 class="infomid-title">달 때문에 지구에게는 어떤 일이 일어날까?</h1>
+        <p class="infomid-subtitle">
+            달이 평소에 지구에게 주면서 일어나는 특별한 모습들을 한 곳에서 살펴봐요.
+        </p>
+
+        <section class="infomid-list-wrapper" aria-label="달이 지구에 주는 영향 목록">
+            <div class="infomid-list">
+                <!-- 조석 현상 -->
+                <article class="infomid-item" data-id="tide">
+                    <header class="infomid-item-header">
+                        <h2 class="infomid-item-title">조석 현상 (밀물과 썰물)</h2>
+                        <span class="infomid-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infomid-item-body">
+                        <p>
+                            바닷물이 갑자기 차오르기도 하고, 쑥 빠져나가기도 하는 모습을 본 적 있나요?
+                            이것을 밀물(바닷물이 들어옴)과 썰물(바닷물이 나감)이라고 해요.
+                            이 현상은 달이 바닷물을 끌어당기기 때문에 생겨요.
+                        </p>
+                        <p>
+                            달이 하늘에서 바닷물을 “이리 와!” 하고 잡아당기면 바닷물이 부풀어 올라요. 그게 밀물이에요.
+                            달이 없는 쪽은 바닷물이 빠져서 썰물이 돼요.
+                            그래서 해변에 모래사장이 보였다가 어느 날은 물속에 쏙 숨기도 해요.
+                            달은 바닷물과 아주 친한 친구처럼 항상 함께 움직이고 있어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 달의 고도 변화 -->
+                <article class="infomid-item" data-id="altitude">
+                    <header class="infomid-item-header">
+                        <h2 class="infomid-item-title">달의 고도 변화 (달이 뜨는 높이가 달라져요)</h2>
+                        <span class="infomid-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infomid-item-body">
+                        <p>
+                            어떤 날은 달이 하늘 위로 아주 높이 올라가 있고,
+                            어떤 날은 훨씬 낮게 떠 있는 것처럼 보일 때가 있어요.
+                            이것을 달의 고도 변화라고 해요.
+                        </p>
+                        <p>
+                            겨울에는 달이 하늘에서 더 높이 올라가고, 여름에는 조금 더 낮게 떠 있어요.
+                            또 사는 장소에 따라서도 달의 높이가 달라요.
+                            북쪽 지방이나 높은 곳에서는 달이 더 높게 보이고, 남쪽 지방에서는 더 낮게 보여요.
+                            그래서 달은 계절과 장소에 따라 높이가 바뀌는 그네를 타는 것처럼
+                            하늘을 오르락내리락하며 여행하고 있는 셈이에요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 달의 일출/일몰 시점 변화 -->
+                <article class="infomid-item" data-id="rise-set">
+                    <header class="infomid-item-header">
+                        <h2 class="infomid-item-title">달의 일출·일몰 시점 변화 (달은 왜 매일 늦게 떠요?)</h2>
+                        <span class="infomid-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infomid-item-body">
+                        <p>
+                            해는 매일 비슷한 시간에 뜨고 지지만, 달은 조금 달라요.
+                            달은 매일 약 50분씩 늦게 떠요.
+                            오늘 달이 저녁 7시에 떴다면, 내일은 7시 50분쯤 뜨는 식이에요.
+                        </p>
+                        <p>
+                            그 이유는 달이 지구 주위를 계속 움직이고 있어서,
+                            다시 우리 눈에 보이는 위치로 돌아오는 데 시간이 더 걸리기 때문이에요.
+                            그래서 어떤 날은 저녁에, 어떤 날은 밤늦게, 또 어떤 날은 새벽에 달을 볼 수 있어요.
+                            달은 시계처럼 딱딱 맞춰 나오지 않고,
+                            매일 시간을 조금씩 바꾸며 나타나는 ‘자유로운 친구’라고 생각해도 좋아요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 일식 -->
+                <article class="infomid-item" data-id="solar-eclipse">
+                    <header class="infomid-item-header">
+                        <h2 class="infomid-item-title">일식 (태양이 달에 가려지는 날)</h2>
+                        <span class="infomid-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infomid-item-body">
+                        <p>
+                            일식은 해가 떠 있는 낮에 생기는 아주 특별한 현상이에요.
+                            달이 갑자기 해 앞을 지나가면서 해를 가리면,
+                            해가 사라진 것처럼 하늘이 어두워져요.
+                        </p>
+                        <p>
+                            마치 달이 “해님, 잠깐만요!” 하고 앞을 스쳐 지나가는 것 같아요.
+                            이때 해가 조금만 보이기도 하고, 어떤 곳에서는 거의 안 보일 수도 있어요.
+                            낮인데도 하늘이 밤처럼 어두워지는 순간도 있어요.
+                            다만 눈으로 직접 해를 보면 위험하니,
+                            반드시 안전한 특별 안경이나 도구를 사용해서 보아야 해요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 월식 -->
+                <article class="infomid-item" data-id="lunar-eclipse">
+                    <header class="infomid-item-header">
+                        <h2 class="infomid-item-title">월식 (달이 지구 그림자에 숨어버리는 날)</h2>
+                        <span class="infomid-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infomid-item-body">
+                        <p>
+                            월식은 밤에 달이 점점 어두워지거나 사라지는 것처럼 보이는 현상이에요.
+                            이번에는 달이 아니라, 지구가 달을 가려요.
+                            지구가 달 뒤에 큰 그림자를 만들고, 달이 그 그림자 속으로 들어가 버리는 거예요.
+                        </p>
+                        <p>
+                            이때 달은 어두워지거나 빨간색에 가까운 색으로 변하기도 해요.
+                            이런 붉은 달을 사람들은 ‘블러드문’이라고 부르기도 해요.
+                            하지만 달이 진짜 사라지는 것이 아니라,
+                            잠깐 지구 그림자 속에 숨어서 쉬고 있는 것이라고 생각하면 더 재미있게 느껴져요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 슈퍼문 -->
+                <article class="infomid-item" data-id="supermoon">
+                    <header class="infomid-item-header">
+                        <h2 class="infomid-item-title">슈퍼문 (유난히 크고 밝은 보름달)</h2>
+                        <span class="infomid-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infomid-item-body">
+                        <p>
+                            어떤 날은 달이 평소보다 훨씬 크고 밝게 보여서 깜짝 놀랄 때가 있어요.
+                            이것을 슈퍼문이라고 해요.
+                            달이 지구와 가장 가까워져 있을 때 보름달이 되면,
+                            평소보다 더 커 보이고, 밤하늘도 훨씬 더 환해져요.
+                        </p>
+                        <p>
+                            마치 달이 “오늘은 특별히 가까이 왔어요, 잘 보이나요?” 하고 인사하는 것 같아요.
+                            슈퍼문이 뜨는 날에는 달이 집이나 나무보다 훨씬 크게 느껴질 때도 있고,
+                            사진을 찍기에도 아주 좋은 날이라 많은 사람들이 하늘을 올려다보게 돼요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 블루문 -->
+                <article class="infomid-item" data-id="blue-moon">
+                    <header class="infomid-item-header">
+                        <h2 class="infomid-item-title">블루문 (한 달에 보름달이 두 번 뜰 때)</h2>
+                        <span class="infomid-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infomid-item-body">
+                        <p>
+                            보름달은 보통 한 달에 한 번 뜨지만,
+                            아주 가끔 한 달 안에 보름달이 두 번 뜨는 특별한 때가 있어요.
+                            이 두 번째 보름달을 블루문이라고 불러요.
+                        </p>
+                        <p>
+                            실제로 파란색 달이 뜨는 것은 아니고,
+                            “정말 드문 특별한 보름달”이라는 뜻으로 이렇게 부르는 거예요.
+                            한 달에 두 번이나 동그란 보름달을 만나는 일은 흔치 않아서,
+                            옛날 사람들은 달이 장난을 치는 것 같다고 생각하며 신기해했어요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 달무리 현상 -->
+                <article class="infomid-item" data-id="halo">
+                    <header class="infomid-item-header">
+                        <h2 class="infomid-item-title">달무리 현상 (달 주변에 생기는 동그란 빛의 원)</h2>
+                        <span class="infomid-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infomid-item-body">
+                        <p>
+                            어떤 밤에는 달 주변에 큰 동그란 빛의 원이 생길 때가 있어요.
+                            이것을 달무리라고 해요.
+                            달무리가 생기면 마치 달이 커다란 반지를 끼고 있는 것처럼 보여요.
+                        </p>
+                        <p>
+                            이 현상은 하늘 높이 떠 있는 아주 작은 얼음 조각들이
+                            달빛을 휘어지게 만들면서 생겨요.
+                            그래서 투명한 빛의 고리처럼 보이거나, 옅은 무지개 빛이 돌 때도 있어요.
+                            옛날 사람들은 달무리가 생기면 비가 올 징조라고 생각했어요.
+                            하늘이 “곧 비가 올지도 몰라요, 준비하세요”라고 알려주는 신호처럼 여겼던 거예요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 달의 색 변화 -->
+                <article class="infomid-item" data-id="color-change">
+                    <header class="infomid-item-header">
+                        <h2 class="infomid-item-title">달의 색 변화 (붉은 달, 노란 달, 주황색 달)</h2>
+                        <span class="infomid-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infomid-item-body">
+                        <p>
+                            어떤 날은 달이 하얗게 보이지만,
+                            또 어떤 날은 노란색, 주황색, 빨간색처럼 보일 때도 있어요.
+                            이것은 달빛이 지구의 공기를 통과하면서 색이 조금씩 바뀌기 때문이에요.
+                        </p>
+                        <p>
+                            특히 달이 지평선 근처에 낮게 떠 있을 때는,
+                            공기를 더 많이 지나가서 노랗거나 주황빛으로 보이기 쉬워요.
+                            월식 때는 달이 지구의 그림자 속에 들어가면서 붉게 보이기도 하는데,
+                            이런 달을 ‘블러드문’이라고 부르기도 해요.
+                            달은 이렇게 자신의 모습을 살짝씩 바꾸며
+                            “오늘은 특별한 모습으로 나타났어요!”라고 말하는 것 같아요.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- 대조 현상 -->
+                <article class="infomid-item" data-id="spring-tide">
+                    <header class="infomid-item-header">
+                        <h2 class="infomid-item-title">대조 현상 (달이 숨는 날, 바닷물은 최고로 올라와요)</h2>
+                        <span class="infomid-item-icon" aria-hidden="true">+</span>
+                    </header>
+                    <div class="infomid-item-body">
+                        <p>
+                            달이 잘 보이지 않는 날에도,
+                            바닷물은 달의 영향을 강하게 받을 때가 있어요.
+                            삭처럼 달이 안 보이는 시기에는
+                            바닷물이 유난히 높이 차오르거나 아주 멀리 빠져나가기도 하는데,
+                            이것을 대조 현상이라고 해요.
+                        </p>
+                        <p>
+                            이때는 달, 해, 지구가 거의 일직선으로 서게 되어서,
+                            달과 해가 바닷물을 동시에 강하게 끌어당기게 돼요.
+                            그래서 밀물 때는 물이 평소보다 더 높이 올라오고,
+                            썰물 때는 더 멀리 빠져나가서 넓은 갯벌이나 모래사장이 드러나기도 해요.
+                            달이 하늘에 잘 보이지 않는 날에도,
+                            바다는 여전히 달이 어디 있는지 알고 반응하고 있는 셈이에요.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============================================ -->
+    <!-- CONTENT END -->
+    <!-- ============================================ -->
+    
+    <script src="./infomid.js"></script>
+</body>
+</html>

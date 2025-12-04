@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+            <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="../css/header.css">
+            <link rel="stylesheet" href="./css/diary.css">
+            <title>MOONY_달관찰일지</title>
+        </head>
+        <body>
+            <!-- ============================================ -->
+            <!-- HEADER START - 다른 페이지 복사 시 이 영역만 복사 -->
+            <!-- ============================================ -->
+            
+            <!-- Menu Overlay -->
+            <div class="menu-overlay"></div>
+        
+            <!-- Header -->
+            <header>
+                <div class="head-container">
+                <!-- Logo -->
+                <a href="../index.html" class="header-logo-link">
+                    <img src="../img/작은 로고.png" alt="로고" class="header-logo">
+                </a>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button class="menu-btn" aria-label="메뉴">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+        
+                <!-- Navigation -->
+                <nav class="nav">
+                    <a href="../sub/sub.html" class="nav-link nav-link-1">달의 위상?</a>
+                    <a href="../info/info.html" class="nav-link nav-link-2">다양한 달의 정보</a>
+                    <a href="../quiz/quiz.html" class="nav-link nav-link-3">달 관련 퀴즈</a>
+                    <a href="../diary/diary.html" class="nav-link nav-link-4">달 관찰 일지 작성</a>
+                    <!-- Mobile Login Button (inside nav) -->
+                    <button class="login-btn login-btn-mobile" onclick="window.location.href='../login/login.html'">로그인</button>
+                    <!-- Mobile Nickname Display -->
+                    <div class="user-nickname-mobile" id="userNicknameMobile"></div>
+                </nav>
+    
+                <!-- Desktop Login Button -->
+                <button class="login-btn login-btn-desktop" onclick="window.location.href='../login/login.html'">로그인</button>
+                <!-- Desktop Nickname Display -->
+                <div class="user-nickname-desktop" id="userNicknameDesktop"></div>
+                </div>
+            </header>
+            <!-- End Header -->
+        
+            <!-- Header Script -->
+            <script>
+                // Mobile menu toggle
+                const menuBtn = document.querySelector('.menu-btn');
+                const nav = document.querySelector('.nav');
+                const overlay = document.querySelector('.menu-overlay');
+                
+                menuBtn.addEventListener('click', () => {
+                    nav.classList.toggle('active');
+                    menuBtn.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                });
+        
+                // 오버레이 클릭 시 메뉴 닫기
+                overlay.addEventListener('click', () => {
+                    nav.classList.remove('active');
+                    menuBtn.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+    
+                // 닉네임 표시 로직 (데스크톱만)
+                function updateHeaderWithNickname() {
+                    const userNickname = localStorage.getItem('userNickname');
+                    const loginBtnDesktop = document.querySelector('.login-btn-desktop');
+                    const nicknameDesktop = document.getElementById('userNicknameDesktop');
+                    
+                    if (userNickname) {
+                        // 닉네임이 있으면 데스크톱 로그인 버튼 숨기고 닉네임 표시
+                        loginBtnDesktop.classList.add('hidden');
+                        nicknameDesktop.textContent = userNickname;
+                        nicknameDesktop.classList.add('show');
+                    } else {
+                        // 닉네임이 없으면 로그인 버튼 표시
+                        loginBtnDesktop.classList.remove('hidden');
+                        nicknameDesktop.classList.remove('show');
+                    }
+                }
+                
+                // 페이지 로드 시 닉네임 확인
+                updateHeaderWithNickname();
+    
+                // ===== 사용자 활동 추적 및 자동 로그아웃 (5분) =====
+                let inactivityTimer;
+                const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5분
+    
+                function resetInactivityTimer() {
+                    clearTimeout(inactivityTimer);
+                    inactivityTimer = setTimeout(() => {
+                        // 5분간 활동이 없으면 닉네임 삭제 및 UI 업데이트
+                        localStorage.removeItem('userNickname');
+                        updateHeaderWithNickname();
+                        updateLogoutButton();
+                    }, INACTIVITY_TIMEOUT);
+                }
+    
+                // 사용자 활동 감지 이벤트들
+                ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'].forEach(event => {
+                    document.addEventListener(event, resetInactivityTimer, true);
+                });
+    
+                // 페이지 로드 시 타이머 시작
+                resetInactivityTimer();
+                
+            </script>
+            <button class="logout-btn" id="logoutBtn" onclick="handleLogout()" aria-label="로그아웃">
+                <span>&times;</span>
+            </button>
+        
+            <script>
+                
+                // 로그아웃 버튼 표시/숨김 업데이트
+                function updateLogoutButton() {
+                    const userNickname = localStorage.getItem('userNickname');
+                    const logoutBtn = document.getElementById('logoutBtn');
+                    
+                    if (userNickname) {
+                        logoutBtn.classList.add('show');
+                    } else {
+                        logoutBtn.classList.remove('show');
+                    }
+                }
+        
+                // 로그아웃 처리
+                function handleLogout() {
+                    if (confirm('로그아웃 하시겠습니까?')) {
+                        localStorage.removeItem('userNickname');
+                        updateHeaderWithNickname();
+                        updateLogoutButton();
+                    }
+                }
+        
+                // 페이지 로드 시 로그아웃 버튼 상태 업데이트
+                updateLogoutButton();
+            </script>
+        
+            <!-- ============================================ -->
+            <!-- HEADER END -->
+            <!-- ============================================ -->
+    
+            <!-- 달 관찰 일지 작성 영역 -->
+            <main class="diary-main">
+                <div class="diary-container">
+                    <!-- 달 이미지 -->
+                    <div class="moon-image-container">
+                        <img src="../sub/img/보름달.webp" alt="달 이미지" class="moon-image" id="moonImage">
+                    </div>
+                    
+                    <!-- 달 정보 카드 -->
+                    <div class="diary-card">
+                        <!-- 날짜 네비게이션 -->
+                        <div class="date-navigation">
+                            <button class="nav-arrow" id="prevDate" aria-label="이전 날짜">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            
+                            <div class="date-display" id="dateDisplay">2025년 11월 15일</div>
+                            
+                            <button class="nav-arrow" id="nextDate" aria-label="다음 날짜">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- 달 이름 -->
+                        <div class="moon-name-container">
+                            <label for="moonName" class="input-label">달 이름</label>
+                            <input type="text" id="moonName" class="moon-name-input" value="보름달" readonly>
+                        </div>
+                        
+                        <!-- 달 관찰 메모 -->
+                        <div class="moon-memo-container">
+                            <label for="moonMemo" class="input-label">오늘 달은 마치</label>
+                            <div class="memo-input-wrapper">
+                                <input type="text" id="moonMemo" class="moon-memo-input" placeholder="아래 단어를 클릭하여 선택하세요" readonly>
+                                <span class="memo-suffix">같아!</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 버튼 그룹 -->
+                        <div class="button-group">
+                            <!-- 저장 버튼 -->
+                            <button class="save-btn" id="saveBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-right: 6px;">
+                                    <path d="M19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16L21 8V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M17 21V13H7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7 3V8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                저장
+                            </button>
+                            
+                            <!-- 지우기 버튼 -->
+                            <button class="clear-btn" id="clearBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-right: 6px;">
+                                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                지우기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+    
+        <!-- 단어 선택 Bottom Sheet (모바일에서는 하단에서 올라오는 패널) -->
+            <div class="choice-sheet-overlay"></div>
+            <div class="choice-sheet">
+                <button class="choice-sheet-close" aria-label="단어 선택 닫기">&times;</button>
+                <div class="choice-buttons-container">
+                    <!-- 상단 그룹 -->
+                    <div class="choice-buttons-row" id="choiceRow1">
+                        <div class="choice-buttons-track">
+                            <button class="choice-btn">동전</button>
+                            <button class="choice-btn">치즈</button>
+                            <button class="choice-btn">등불</button>
+                            <button class="choice-btn">거울</button>
+                            <button class="choice-btn">은쟁반</button>
+                            <button class="choice-btn">진주</button>
+                            <button class="choice-btn">구슬</button>
+                            <button class="choice-btn">호박</button>
+                            <button class="choice-btn">풍선</button>
+                            <button class="choice-btn">접시</button>
+                            <button class="choice-btn">바나나</button>
+                            <button class="choice-btn">눈사람</button>
+                            <button class="choice-btn">레몬</button>
+                            <button class="choice-btn">옥구슬</button>
+                            <button class="choice-btn">비누방울</button>
+                            <button class="choice-btn">백설공주</button>
+                            <button class="choice-btn">손톱</button>
+                            <button class="choice-btn">낫</button>
+                            <button class="choice-btn">아이스크림</button>
+                            <button class="choice-btn">빵</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 하단 그룹 -->
+                    <div class="choice-buttons-row" id="choiceRow2">
+                        <div class="choice-buttons-track">
+                            <button class="choice-btn">은하수</button>
+                            <button class="choice-btn">눈</button>
+                            <button class="choice-btn">꽃</button>
+                            <button class="choice-btn">천사</button>
+                            <button class="choice-btn">구름</button>
+                            <button class="choice-btn">별</button>
+                            <button class="choice-btn">다이아몬드</button>
+                            <button class="choice-btn">목화솜</button>
+                            <button class="choice-btn">우유</button>
+                            <button class="choice-btn">하얀 토끼</button>
+                            <button class="choice-btn">수정</button>
+                            <button class="choice-btn">사탕</button>
+                            <button class="choice-btn">빛</button>
+                            <button class="choice-btn">은빛 물결</button>
+                            <button class="choice-btn">기사</button>
+                            <button class="choice-btn">솜사탕</button>
+                            <button class="choice-btn">왕관</button>
+                            <button class="choice-btn">보석</button>
+                            <button class="choice-btn">눈꽃</button>
+                            <button class="choice-btn">숨바꼭질하는 요정</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 선택 버튼 애니메이션 스크립트 -->
+            <script src="./js/diary.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,585 @@
+/* ============================================ */
+/* 달 관찰 일지 작성 영역 */
+/* ============================================ */
+
+.diary-main {
+    min-height: 100vh;
+    padding: 120px 20px 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* diary-container에 slide-4-box 외형 적용 */
+.diary-container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    padding: 40px;
+    border-radius: 36px;
+    /* 배경: 검정 20% 투명도 */
+    background: rgba(0, 0, 0, 0.2);
+    /* 블러 효과 */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* 그라데이션 테두리를 위한 설정 */
+    position: relative;
+    background-clip: padding-box;
+}
+
+/* 그라데이션 테두리 (::before 가상 요소) */
+.diary-container::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 36px;
+    /* 상단 #b9b9b9에서 하단 #000000으로 그라데이션 */
+    background: linear-gradient(to bottom, rgba(185, 185, 185, 0.5), rgba(0, 0, 0, 0.5));
+    /* 테두리만 보이도록 마스크 적용 */
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+    padding: 1px;
+}
+
+/* 대각선 반짝임 효과 (::after 가상 요소) */
+.diary-container::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 40%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 60%,
+        transparent 100%
+    );
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* 달 이미지 */
+.moon-image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.moon-image {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 50%;
+}
+
+/* 달 정보 카드 */
+.diary-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* 날짜 네비게이션 */
+.date-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-arrow {
+    width: 48px;
+    height: 48px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.nav-arrow:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.nav-arrow:active {
+    transform: scale(0.95);
+}
+
+.date-display {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: #ffffff;
+    text-align: center;
+    flex: 1;
+}
+
+/* 입력 필드 공통 스타일 */
+.input-label {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 12px;
+    display: block;
+}
+
+/* 달 이름 */
+.moon-name-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.moon-name-input {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 16px 20px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.moon-name-input:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 달 관찰 메모 */
+.moon-memo-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.memo-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.moon-memo-input {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 16px 20px;
+    outline: none;
+    flex: 1;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.moon-memo-input[readonly] {
+    cursor: default;
+    user-select: none;
+}
+
+.moon-memo-input:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.moon-memo-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.memo-suffix {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+/* 버튼 그룹 컨테이너 */
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+/* 저장 버튼 - 헤더 로그인 버튼 글래스모피즘 스타일 적용 */
+.save-btn,
+.clear-btn {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #ffffff;
+    /* 글래스모피즘 배경 */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 12px 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 내부 하이라이트 */
+    box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: 
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease,
+        transform 0.4s ease;
+    flex: 1;
+}
+
+.clear-btn {
+    background: rgba(255, 100, 100, 0.15);
+    border-color: rgba(255, 100, 100, 0.3);
+}
+
+.save-btn:hover,
+.clear-btn:hover {
+    /* 호버 시 글래스모피즘 강화 */
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-color: rgba(255, 255, 255, 0.5);
+    /* 더 강한 하이라이트 */
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.5),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+        0 6px 16px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(255, 255, 255, 0.2);
+    /* 살짝 위로 떠오르는 효과 */
+    transform: translateY(-2px) scale(1.02);
+}
+
+.clear-btn:hover {
+    background: rgba(255, 100, 100, 0.25);
+    border-color: rgba(255, 100, 100, 0.5);
+}
+
+.save-btn:active,
+.clear-btn:active {
+    transform: translateY(0);
+}
+
+/* 태블릿 반응형 */
+@media (max-width: 1024px) {
+    .diary-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .moon-image {
+        max-width: 400px;
+    }
+    
+    .diary-card {
+        width: 100%;
+        max-width: 600px;
+    }
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .diary-main {
+        /* 헤더(상단) 여백만 두고, 컨텐츠는 위에서부터 자연스럽게 쌓이도록 */
+        padding: 96px 16px 40px;
+        display: block;
+    }
+    
+    .moon-image {
+        /* 전체를 위로 올린 만큼 축소해 비율 유지 */
+        max-width: 240px;
+    }
+    
+    .diary-card {
+        padding: 20px;
+        gap: 20px;
+    }
+    
+    .date-display {
+        font-size: 22px;
+    }
+    
+    .nav-arrow {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .moon-name-input,
+    .moon-memo-input {
+        font-size: 18px;
+        padding: 12px 16px;
+    }
+    
+    .memo-suffix {
+        font-size: 18px;
+    }
+    
+    .save-btn,
+    .clear-btn {
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+
+    /* 모바일에서 메모 입력 줄폭 조정 (입력 칸 살짝 줄이고 '같아!'를 같은 줄에 유지) */
+    .memo-input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .moon-memo-input {
+        flex: 0 1 70%;
+        max-width: 70%;
+    }
+
+    .memo-suffix {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .moon-image {
+        max-width: 220px;
+    }
+    
+    .diary-card {
+        padding: 18px;
+        gap: 18px;
+    }
+    
+    .date-display {
+        font-size: 18px;
+    }
+    
+    .moon-name-input,
+    .moon-memo-input {
+        font-size: 16px;
+    }
+    
+    .memo-suffix {
+        font-size: 16px;
+    }
+    
+    .save-btn,
+    .clear-btn {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+}
+
+/* ============================================ */
+/* 선택 버튼 컨테이너 */
+/* ============================================ */
+
+.choice-sheet-overlay {
+    display: none;
+}
+
+.choice-sheet {
+    display: block;
+}
+
+.choice-buttons-container {
+    position: fixed;
+    bottom: 60px;
+    left: 0;
+    width: 100vw;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 16px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+/* 버튼 행 */
+.choice-buttons-row {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+/* 버튼 트랙 (움직이는 부분) */
+.choice-buttons-track {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    white-space: nowrap;
+    animation: scrollLeft 30s linear infinite;
+    will-change: transform;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* 스크롤 애니메이션 */
+@keyframes scrollLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* 선택 버튼 스타일 */
+.choice-btn {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 300; /* Light */
+    font-size: 20px;
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    white-space: nowrap;
+    backdrop-filter: blur(10px);
+    flex-shrink: 0;
+}
+
+.choice-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.choice-btn:active {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    /* 블러 오버레이 */
+    .choice-sheet-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        opacity: 0;
+        pointer-events: none;
+        /* 헤더, 메뉴보다 위에 오도록 크게 설정 */
+        z-index: 11000;
+        transition: opacity 0.3s ease;
+    }
+
+    /* 하단에서 올라오는 Bottom Sheet - 기본은 보이지 않음 */
+    .choice-sheet {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        /* 화면 중앙 모달 느낌을 위해 전체 라운드 처리 */
+        border-radius: 24px;
+        padding: 20px 16px 24px;
+        /* 처음에는 화면 아래쪽 바깥에서 시작 */
+        transform: translate(-50%, 150%);
+        transition: transform 1.5s ease;
+        /* 시트는 오버레이보다 위에 */
+        z-index: 11001;
+    }
+
+    .choice-sheet-close {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        width: 32px;
+        height: 32px;
+        border-radius: 999px;
+        border: none;
+        background: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Bottom Sheet 안에서 버튼 컨테이너 배치 */
+    .choice-buttons-container {
+        position: static;
+        bottom: auto;
+        left: auto;
+        width: 100%;
+        gap: 12px;
+        margin-top: 8px;
+        margin-bottom: 0;
+    }
+
+    /* 활성화 상태: 오버레이 표시 + 시트 올라오기 */
+    body.choice-sheet-open .choice-sheet-overlay {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    body.choice-sheet-open .choice-sheet {
+        /* 화면 중앙으로 이동 + 표시 */
+        display: block;
+        transform: translate(-50%, -50%);
+    }
+    
+    .choice-buttons-track {
+        gap: 8px;
+    }
+    
+    .choice-btn {
+        font-size: 16px;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .choice-buttons-track {
+        gap: 6px;
+    }
+    
+    .choice-btn {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+}
+
