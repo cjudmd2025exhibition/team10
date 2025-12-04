@@ -1,0 +1,493 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    width: 100%;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* 전체 페이지에서 항상 최상단에 보이도록 z-index를 가장 높게 설정 */
+    z-index: 10001;
+}
+
+.head-container {
+    width: 100%;
+    height: 80px;
+    max-width: 1440px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* 1. 로고 링크 */
+.header-logo-link {
+    position: absolute;
+    left: 126px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.header-logo-link:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* 로고 이미지 */
+.header-logo {
+    width: 144px;
+    height: 26px;
+    display: block;
+}
+
+/* 2-5. 네비게이션 텍스트 */
+.nav-link {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 300;
+    font-size: 16pt;
+    color: #fff;
+    text-decoration: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-block;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 100%;
+    height: 1px;
+    background-color: #fff;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-link:hover::after {
+    opacity: 1;
+}
+
+.nav-link-1 {
+    left: 442px;
+}
+
+.nav-link-2 {
+    left: 636px;
+}
+
+.nav-link-3 {
+    left: 844px;
+}
+
+.nav-link-4 {
+    left: 1018px;
+}
+
+/* 6. 로그인 버튼 - 글래스모피즘 (공통) */
+.login-btn {
+    width: 84px;
+    height: 40px;
+    border-radius: 999px;
+    /* 글래스모피즘 배경 */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 300;
+    font-size: 16pt;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 내부 하이라이트 */
+    box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(0, 0, 0, 0.2);
+    /* 부드러운 전환 애니메이션 */
+    transition: 
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease,
+        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 데스크톱 로그인 버튼 */
+.login-btn-desktop {
+    position: absolute;
+    right: 126px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.login-btn-desktop:hover {
+    /* 호버 시 글래스모피즘 강화 */
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-color: rgba(255, 255, 255, 0.5);
+    /* 더 강한 하이라이트 */
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.5),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+        0 6px 16px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(255, 255, 255, 0.2);
+    /* 살짝 위로 떠오르는 효과 */
+    transform: translateY(calc(-50% - 2px)) scale(1.02);
+}
+
+/* 닉네임 표시 영역 (데스크톱) */
+.user-nickname-desktop {
+    position: absolute;
+    right: 98px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400;
+    font-size: 16pt;
+    color: #8EA5FF;
+    display: none; /* 기본적으로 숨김 */
+}
+
+/* 닉네임이 있을 때 로그인 버튼 숨기기 */
+.login-btn-desktop.hidden {
+    display: none;
+}
+
+.user-nickname-desktop.show {
+    display: block;
+}
+
+/* 모바일 로그인 버튼 (기본 숨김) */
+.login-btn-mobile {
+    display: none;
+}
+
+/* 햄버거 메뉴 버튼 */
+.menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    position: absolute;
+    right: 126px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1001;
+}
+
+.menu-btn span {
+    width: 100%;
+    height: 3px;
+    background: #fff;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    display: block;
+    transform-origin: center;
+}
+
+/* 햄버거 메뉴 활성화 시 X 모양으로 변경 */
+.menu-btn.active {
+    justify-content: center;
+}
+
+.menu-btn.active span:nth-child(1) {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.menu-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-btn.active span:nth-child(3) {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+/* 네비게이션 래퍼 */
+.nav {
+    display: contents;
+}
+
+/* 메뉴 오버레이 (배경 흐림 효과) */
+.menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* 헤더 바로 아래 레벨에서 전체 화면을 덮도록 설정 */
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.menu-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* 📱 태블릿 및 모바일 (1440px 이하) */
+@media (max-width: 1024px) {
+    /* 햄버거 메뉴 버튼 표시 */
+    .menu-btn {
+        display: flex;
+        right: 20px;
+    }
+
+    /* 로고 위치 조정 */
+    .header-logo-link {
+        left: 20px;
+    }
+    
+    .header-logo {
+        width: 100px;
+        height: 18px;
+    }
+
+    /* 데스크톱 로그인 버튼 숨김 */
+    .login-btn-desktop {
+        display: none;
+    }
+
+    /* 데스크톱 닉네임 표시 숨김 */
+    .user-nickname-desktop {
+        display: none !important;
+    }
+
+    /* 모바일 로그인 버튼 표시 */
+    .login-btn-mobile {
+        display: none; /* 메뉴 비활성화 시 숨김 */
+        position: static;
+        transform: none;
+        margin-top: 1.5rem;
+    }
+
+    .nav.active .login-btn-mobile {
+        display: flex; /* 메뉴 활성화 시 표시 */
+    }
+
+    /* 닉네임 표시 영역 (모바일) */
+    .user-nickname-mobile {
+        display: none; /* 메뉴 비활성화 시 숨김 */
+        position: static;
+        transform: none;
+        margin-top: 1.5rem;
+        font-family: 'Pretendard', sans-serif;
+        font-weight: 400;
+        font-size: 18pt;
+        color: #fff;
+        text-align: center;
+        padding: 1rem;
+        width: 80%;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav.active .user-nickname-mobile.show {
+        display: block; /* 메뉴 활성화 시 표시 */
+    }
+
+    /* 닉네임이 있을 때 모바일 로그인 버튼 숨기기 */
+    .login-btn-mobile.hidden {
+        display: none !important;
+    }
+
+    .login-btn-mobile:hover {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-color: rgba(255, 255, 255, 0.5);
+        box-shadow: 
+            inset 0 1px 2px rgba(255, 255, 255, 0.5),
+            inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+            0 6px 16px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(255, 255, 255, 0.2);
+        transform: scale(1.02);
+    }
+
+    /* 네비게이션 기본 숨김 */
+    .nav {
+        display: none;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background: transparent;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 2rem 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* 네비게이션 활성화 시 */
+    .nav.active {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    /* 네비게이션 링크 스타일 재정의 */
+    .nav-link {
+        position: static;
+        transform: none;
+        font-size: 18pt;
+        width: 80%;
+        text-align: center;
+        padding: 1rem;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* 모바일에서 밑줄 효과 제거 */
+    .nav-link::after {
+        display: none;
+    }
+
+    /* 각 링크별 left 값 초기화 */
+    .nav-link-1,
+    .nav-link-2,
+    .nav-link-3,
+    .nav-link-4 {
+        left: auto;
+    }
+}
+
+/* 📱 모바일 (768px 이하) - 추가 조정 */
+@media (max-width: 768px) {
+    .header-logo-link {
+        left: 20px;
+    }
+    
+    .header-logo {
+        width: 100px;
+        height: 18px;
+    }
+
+    .menu-btn {
+        right: 20px;
+    }
+}
+
+/* 📱 초소형 모바일 (480px 이하) */
+@media (max-width: 480px) {
+    header {
+        height: 60px;
+    }
+
+    .head-container {
+        height: 60px;
+    }
+
+    .header-logo {
+        width: 80px;
+        height: 15px;
+    }
+
+    .menu-btn {
+        width: 25px;
+        height: 20px;
+    }
+
+    .menu-btn span {
+        height: 2px;
+    }
+
+    .nav {
+        top: 60px;
+        padding: 1.5rem 0;
+    }
+
+    .nav-link {
+        font-size: 16pt;
+        padding: 0.8rem;
+    }
+}
+
+/* 로그아웃 버튼 (닉네임 삭제) */
+.logout-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 107, 107, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 24px;
+    font-weight: 300;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.logout-btn.show {
+    display: flex;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 107, 107, 1);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+}
+
+.logout-btn span {
+    line-height: 1;
+    display: block;
+}
+
+/* 모바일에서 로그아웃 버튼 위치 조정 */
+@media (max-width: 1024px) {
+    .logout-btn {
+        top: 22px;
+        right: 70px; /* 햄버거 메뉴 버튼 왼쪽에 배치 */
+    }
+}
+
+@media (max-width: 480px) {
+    .logout-btn {
+        top: 12px;
+        right: 60px;
+        width: 32px;
+        height: 32px;
+        font-size: 20px;
+    }
+}
+
+/* header end */

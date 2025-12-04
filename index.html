@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <title>MOONY</title>
+</head>
+<body>
+    <!-- ============================================ -->
+    <!-- HEADER START - 다른 페이지 복사 시 이 영역만 복사 -->
+    <!-- ============================================ -->
+    
+    <!-- Menu Overlay -->
+    <div class="menu-overlay"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="head-container">
+            <!-- Logo -->
+            <a href="./index.html" class="header-logo-link">
+                <img src="./img/작은 로고.png" alt="로고" class="header-logo">
+            </a>
+            
+            <!-- Mobile Menu Button -->
+            <button class="menu-btn" aria-label="메뉴">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Navigation -->
+            <nav class="nav">
+                <a href="./sub/sub.html" class="nav-link nav-link-1">달의 위상?</a>
+                <a href="./info/info.html" class="nav-link nav-link-2">다양한 달의 정보</a>
+                <a href="./quiz/quiz.html" class="nav-link nav-link-3">달 관련 퀴즈</a>
+                <a href="./diary/diary.html" class="nav-link nav-link-4">달 관찰 일지 작성</a>
+                <!-- Mobile Login Button (inside nav) -->
+                <button class="login-btn login-btn-mobile" onclick="window.location.href='./login/login.html'">로그인</button>
+                <!-- Mobile Nickname Display -->
+                <div class="user-nickname-mobile" id="userNicknameMobile"></div>
+            </nav>
+
+            <!-- Desktop Login Button -->
+            <button class="login-btn login-btn-desktop" onclick="window.location.href='./login/login.html'">로그인</button>
+            <!-- Desktop Nickname Display -->
+            <div class="user-nickname-desktop" id="userNicknameDesktop"></div>
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- Header Script -->
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.querySelector('.menu-btn');
+        const nav = document.querySelector('.nav');
+        const overlay = document.querySelector('.menu-overlay');
+        
+        menuBtn.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            menuBtn.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        // 오버레이 클릭 시 메뉴 닫기
+        overlay.addEventListener('click', () => {
+            nav.classList.remove('active');
+            menuBtn.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // 닉네임 표시 로직 (데스크톱만)
+        function updateHeaderWithNickname() {
+            const userNickname = localStorage.getItem('userNickname');
+            const loginBtnDesktop = document.querySelector('.login-btn-desktop');
+            const nicknameDesktop = document.getElementById('userNicknameDesktop');
+            
+            if (userNickname) {
+                // 닉네임이 있으면 데스크톱 로그인 버튼 숨기고 닉네임 표시
+                loginBtnDesktop.classList.add('hidden');
+                nicknameDesktop.textContent = userNickname;
+                nicknameDesktop.classList.add('show');
+            } else {
+                // 닉네임이 없으면 로그인 버튼 표시
+                loginBtnDesktop.classList.remove('hidden');
+                nicknameDesktop.classList.remove('show');
+            }
+        }
+        
+        // 페이지 로드 시 닉네임 확인
+        updateHeaderWithNickname();
+
+        // ===== 사용자 활동 추적 및 자동 로그아웃 (5분) =====
+        let inactivityTimer;
+        const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5분
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                // 5분간 활동이 없으면 닉네임 삭제 및 UI 업데이트
+                localStorage.removeItem('userNickname');
+                updateHeaderWithNickname();
+                if (typeof updateLogoutButton === 'function') {
+                    updateLogoutButton();
+                }
+            }, INACTIVITY_TIMEOUT);
+        }
+
+        // 사용자 활동 감지 이벤트들
+        ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'].forEach(event => {
+            document.addEventListener(event, resetInactivityTimer, true);
+        });
+
+        // 페이지 로드 시 타이머 시작
+        resetInactivityTimer();
+    </script>
+
+    <!-- 로그아웃 버튼 (닉네임이 있을 때만 표시) -->
+    <button class="logout-btn" id="logoutBtn" onclick="handleLogout()" aria-label="로그아웃">
+        <span>&times;</span>
+    </button>
+
+    <script>
+        // 로그아웃 버튼 표시/숨김 업데이트
+        function updateLogoutButton() {
+            const userNickname = localStorage.getItem('userNickname');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            if (userNickname) {
+                logoutBtn.classList.add('show');
+            } else {
+                logoutBtn.classList.remove('show');
+            }
+        }
+
+        // 로그아웃 처리
+        function handleLogout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                localStorage.removeItem('userNickname');
+                updateHeaderWithNickname();
+                updateLogoutButton();
+            }
+        }
+
+        // 페이지 로드 시 로그아웃 버튼 상태 업데이트
+        updateLogoutButton();
+    </script>
+    <!-- ============================================ -->
+    <!-- HEADER END -->
+    <!-- ============================================ -->
+
+
+    <!-- ============================================ -->
+    <!-- PAGE CONTENT START -->
+    <!-- ============================================ -->
+
+    <!-- Swiper -->
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide slide-1">
+                <img src="./img/메인페이지 로고(흰색만).png" alt="MOONY 로고" class="slide-1-logo">
+                <img src="./img/img.index/달 그림자.png" alt="달 그림자" class="slide-1-shadow">
+                <img src="./sub/img/보름달.webp" alt="달 이미지" class="slide-1-image">
+            </div>
+            <div class="swiper-slide slide-2">
+                <h2 class="slide-2-title">
+                    <img src="./img/MOONY.webp" alt="MOONY 로고" class="slide-2-title-img">
+                </h2>
+                <h3 class="slide-2-subtitle">달에 대해 더 쉽게 공부하고 싶으신가요?</h3>
+                <p class="slide-2-description">
+                    <span class="moony-text">
+                        <img src="./img/MOONY.webp" alt="MOONY 로고" class="moony-inline-logo">
+                    </span>
+                    <span class="regular-text">와 함께 달에 대해 쉽게 공부해요!</span>
+                </p>
+                <!-- 왼쪽 박스 -->
+                <div class="slide-2-glass-box slide-2-glass-box-left">
+                    <img src="./img/img.index/슬라이드2_일지작성 이모티콘.png" alt="일지 작성 아이콘" class="glass-box-icon">
+                    <h4 class="glass-box-title">일지 작성</h4>
+                    <p class="glass-box-item">⨳ 나중에도 추억을 회상할 수 있게</p>
+                    <p class="glass-box-item">⨳ 까먹더라도 다시 볼 수 있게</p>
+                    <p class="glass-box-item">⨳ 작성하면서 공부할 수 있게</p>
+                </div>
+                
+                <!-- 중앙 박스 -->
+                <div class="slide-2-glass-box slide-2-glass-box-center">
+                    <img src="./img/img.index/슬라이드2_자기 전 학습 아이콘.png" alt="자기 전 학습 아이콘" class="glass-box-icon">
+                    <h4 class="glass-box-title">자기 전 학습</h4>
+                    <p class="glass-box-item">⨳ 기억을 더 튼튼하게</p>
+                    <p class="glass-box-item">⨳ 외우기에 적합한 시간</p>
+                    <p class="glass-box-item">⨳ 공부할 준비가 된 시간</p>
+                </div>
+                
+                <!-- 오른쪽 박스 -->
+                <div class="slide-2-glass-box slide-2-glass-box-right">
+                    <img src="./img/img.index/슬라이드2_반복학습.png" alt="반복 학습 아이콘" class="glass-box-icon">
+                    <h4 class="glass-box-title">반복 학습</h4>
+                    <p class="glass-box-item">⨳ 기억을 오래 할 수 있게</p>
+                    <p class="glass-box-item">⨳ 스스로 떠올릴 수 있게</p>
+                    <p class="glass-box-item">⨳ 쉽게 잊지 않게</p>
+                </div>
+            </div>
+            <div class="swiper-slide slide-3">
+                <p class="slide-3-title">
+                    <span class="moony-text">
+                        <img src="./img/MOONY.webp" alt="MOONY 로고" class="moony-inline-logo">
+                    </span>
+                    <span class="regular-text"> 는 어떤 방식을 사용할까요?</span>
+                </p>
+                <div class="slide-3-box slide-3-box-1">
+                    <p class="slide-3-box-number">01</p>
+                    <h4 class="slide-3-box-title">조형적인 특징</h4>
+                    <p class="slide-3-box-description">
+                        아동은 사물의 형태와 구조를 인지,<br> 모양과 크기 등 시각적 요소를 구분
+                    </p>
+                    <img src="./img/img.index/슬라이드3_조형적인 특징.png" alt="조형적인 특징" class="slide-3-box-image">
+                </div>
+                <div class="slide-3-box slide-3-box-2">
+                    <p class="slide-3-box-number">02</p>
+                    <h4 class="slide-3-box-title">직관적인 이름</h4>
+                    <p class="slide-3-box-description">
+                        아동이 쉽게 이해, 기억할 수 있도록<br>단순하고 명확한 명칭을 사용
+                    </p>
+                    <img src="./img/img.index/슬라이드3_직관적인 이름.png" alt="직관적인 이름" class="slide-3-box-image">
+                </div>
+                <div class="slide-3-box slide-3-box-3">
+                    <p class="slide-3-box-number">03</p>
+                    <h4 class="slide-3-box-title">관찰 접근성</h4>
+                    <p class="slide-3-box-description">
+                        직접 관찰, 경험할 수 있는 친근하고<br>접근하기 쉬운 대상이나 현상
+                    </p>
+                    <img src="./img/img.index/슬라이드3_관찰 접근성.png" alt="관찰 접근성" class="slide-3-box-image">
+                </div>
+                <div class="slide-3-box slide-3-box-4">
+                    <p class="slide-3-box-number">04</p>
+                    <h4 class="slide-3-box-title">논리적 분류 / 서열화</h4>
+                    <p class="slide-3-box-description">
+                        구체적 조작기 아동은 분류, 서열화<br>능력이 발달
+                    </p>
+                    <img src="./img/img.index/슬라이드3_논리적 분류서열화.png" alt="논리적 분류서열화" class="slide-3-box-image">
+                </div>
+            </div>
+            <div class="swiper-slide slide-4">
+                <p class="slide-4-title">
+                    <span class="moony-text">
+                        <img src="./img/MOONY.webp" alt="MOONY 로고" class="moony-inline-logo">
+                    </span>
+                    <span class="regular-text"> 는 어떤것을 교육할까요?</span>
+                </p>
+                <div class="slide-4-box slide-4-box-left">
+                    <h3 class="slide-4-box-title">달 자체의 변화와 주기적 현상</h3>
+                    <p class="slide-4-box-subtitle">the changes and periodic phenomena of the moon itself</p>
+                    <img src="./img/img.index/슬라이드4_달의 위상변화.webp" alt="달의 위상변화" class="slide-4-image-1">
+                    <img src="./img/img.index/슬라이드4_주기 동기화.webp" alt="주기 동기화" class="slide-4-image-2">
+                    <img src="./img/img.index/슬라이드4_일식 월식.webp" alt="일식 월식" class="slide-4-image-3">
+                    <p class="slide-4-text-title-1">달의 위상 변화</p>
+                    <p class="slide-4-text-title-2">주기 동기화</p>
+                    <p class="slide-4-text-title-3">일식ㆍ월식</p>
+                    <p class="slide-4-text-desc-1">달이 지구를 돌며 태양빛 받는 부분이<br>달라져 초승·상현·보름·하현·그믐으로<br>주기적 변화</p>
+                    <p class="slide-4-text-desc-2">달의 자전 주기와 공전 주기가 같아<br>항상 같은 면만 지구를 향하는 상태</p>
+                    <p class="slide-4-text-desc-3">일식은 달이 태양을 가릴 때 낮에<br>월식은 지구 그림자가 달을 가릴 때<br>밤에 발생</p>
+                </div>
+                <div class="slide-4-box slide-4-box-center">
+                    <h3 class="slide-4-box-title">달이 지구에 영향을 주는 현상</h3>
+                    <p class="slide-4-box-subtitle">the phenomenon of the moon affecting the earth</p>
+                    <img src="./img/img.index/슬라이드4_조석현상.webp" alt="조석현상" class="slide-4-image-1">
+                    <img src="./img/img.index/슬라이드4_자전축 안정화.webp" alt="자전축 안정화" class="slide-4-image-2">
+                    <img src="./img/img.index/슬라이드4_생태계 안정화.png" alt="생태계 안정화화" class="slide-4-image-3">
+                    <p class="slide-4-text-title-1">조석 현상</p>
+                    <p class="slide-4-text-title-2">자전축 안정화</p>
+                    <p class="slide-4-text-title-3">생태계 안정화</p>
+                    <p class="slide-4-text-desc-1">달과 태양의 중력이 바다를 끌어올려<br>만조·간조가 생기는 바닷물의 주기적<br>변화</p>
+                    <p class="slide-4-text-desc-2">달의 인력으로 지구 자전축 흔들림이<br>줄어들어 기후 변동성이 완만해지는<br>효과</p>
+                    <p class="slide-4-text-desc-3">조수 리듬과 달빛이 생물의 생활사와<br>이동·산란에 영향, 해양 생태계 균형에<br>기여</p>
+                </div>
+                <div class="slide-4-box slide-4-box-right">
+                    <h3 class="slide-4-box-title">달과 관련된 설화 및 기타 정보</h3>
+                    <p class="slide-4-box-subtitle">Tales and other information related to the moon</p>
+                    <img src="./img/img.index/슬라이드4_전래설화.webp" alt="전래설화" class="slide-4-image-1">
+                    <img src="./img/img.index/슬라이드4_국가별 설화.webp" alt="국가별 설화" class="slide-4-image-2">
+                    <img src="./img/img.index/슬라이드 4_역사사료.webp" alt="역사사료" class="slide-4-image-3">
+                    <p class="slide-4-text-title-1">전래 설화</p>
+                    <p class="slide-4-text-title-2">국가별 설화</p>
+                    <p class="slide-4-text-title-3">역사 사료</p>
+                    <p class="slide-4-text-desc-1">달 토끼, 월지·항아 등 달 관련 상징과<br>교훈을 담은 옛이야기가 전승됨</p>
+                    <p class="slide-4-text-desc-2">한국 달토끼, 중국 항아, 일본 대나무<br>절구, 서구 달 남자 등 문화별 달 신화<br>다양함</p>
+                    <p class="slide-4-text-desc-3">고대 천문기록·역서에 월식·월상 관측이<br> 남아 역법과 농경·왕조 사건과 연결됨</p>
+                </div>
+            </div>
+            <div class="swiper-slide slide-5">
+                <p class="slide-5-title">
+                    <span class="moony-text">
+                        <img src="./img/MOONY.webp" alt="MOONY 로고" class="moony-inline-logo">
+                    </span>
+                    <span class="regular-text"> 와 함께 공부할 준비 되셨나요?</span>
+                </p>
+                <button class="slide-5-btn slide-5-btn-yes"><span>네!</span></button>
+                <button class="slide-5-btn slide-5-btn-no"><span>아니오</span></button>
+            </div>
+        </div>
+    </div>
+    <!-- End Swiper -->
+
+    <!-- 스크롤 안내 (고정 위치) -->
+    <div class="scroll-indicator">
+        <img src="./img/img.index/스크롤을 하세요.png" alt="스크롤 안내" class="scroll-indicator-image">
+        <img src="./img/img.index/화살표.png" alt="화살표" class="scroll-indicator-arrow">
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PAGE CONTENT END -->
+    <!-- ============================================ -->
+
+
+    <!-- ============================================ -->
+    <!-- PAGE SCRIPTS START -->
+    <!-- ============================================ -->
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <!-- Initialize Swiper -->
+    <script>
+        // 모바일 여부 확인 (1024px 이하를 모바일로 간주)
+        const isMobile = window.innerWidth <= 1024;
+        
+        var swiper = new Swiper(".mySwiper", {
+            direction: "vertical",
+            speed: 500, // 슬라이드 전환 시간 (0.5초)
+            mousewheel: {
+                enabled: true,
+                forceToAxis: true,
+                sensitivity: 1
+            },
+            allowTouchMove: isMobile, // 모바일에서만 드래그 활성화
+            simulateTouch: isMobile, // 모바일에서만 터치 시뮬레이션 활성화
+            on: {
+                slideChange: function() {
+                    const scrollIndicator = document.querySelector('.scroll-indicator');
+                    // 슬라이드 1 (인덱스 0)이면 투명도 100%, 그 외는 0%
+                    if (this.activeIndex === 0) {
+                        scrollIndicator.style.opacity = '1';
+                    } else {
+                        scrollIndicator.style.opacity = '0';
+                    }
+                }
+            }
+        });
+        
+        // 슬라이드 3 박스 호버 시 내용 영구 표시 (모든 박스에 적용)
+        const slide3Boxes = document.querySelectorAll('.slide-3-box');
+        slide3Boxes.forEach(box => {
+            box.addEventListener('mouseenter', function() {
+                this.classList.add('revealed');
+            });
+        });
+
+        // 슬라이드 5 "네!" 버튼 클릭 시 sub 페이지로 이동
+        const yesButton = document.querySelector('.slide-5-btn-yes');
+        if (yesButton) {
+            yesButton.addEventListener('click', function() {
+                window.location.href = './sub/sub.html';
+            });
+        }
+
+        // 슬라이드 5 "아니오" 버튼 클릭 시 슬라이드 1로 이동
+        const noButton = document.querySelector('.slide-5-btn-no');
+        if (noButton) {
+            noButton.addEventListener('click', function() {
+                swiper.slideTo(0, 800); // 0.8초 동안 슬라이드 1로 이동
+            });
+        }
+    </script>
+
+    <!-- ============================================ -->
+    <!-- PAGE SCRIPTS END -->
+    <!-- ============================================ -->
+
+</body> 
+</html>

@@ -1,0 +1,1800 @@
+/* Index Page Styles */
+
+/* Swiper Styles */
+.swiper {
+    width: 100%;
+    height: 100vh;
+    overflow: visible !important;
+}
+
+.swiper-wrapper {
+    overflow: visible !important;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 48px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: visible !important;
+}
+
+/* Slide 1 */
+.slide-1 {
+    overflow: visible !important;
+}
+
+.slide-1-logo {
+    position: absolute;
+    width: 50vw;
+    height: auto;
+    /* 좌우 중앙정렬 */
+    left: 50%;
+    transform: translateX(-50%);
+    /* 화면 상단에서 130px 마진 */
+    top: 12.04vh;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.slide-1-image {
+    position: absolute;
+    width: 59.58vw;
+    height: auto;
+    /* 좌우 중앙정렬 */
+    left: 50%;
+    transform: translateX(-50%);
+    /* 화면 상단에서 307px 마진 */
+    top: 28.43vh;
+    z-index: 10;
+    pointer-events: none;
+    /* 회전 애니메이션 */
+    transform-origin: center;
+    animation: rotateMoon 300s linear infinite;
+}
+
+/* 달 이미지 회전 애니메이션 (3분 = 180초) */
+@keyframes rotateMoon {
+    from {
+        transform: translateX(-50%) rotate(0deg);
+    }
+    to {
+        transform: translateX(-50%) rotate(360deg);
+    }
+}
+
+.slide-1-shadow {
+    position: absolute;
+    width: 78.13vw;
+    height: auto;
+    /* 좌우 중앙정렬 */
+    left: 50%;
+    transform: translateX(-50%);
+    /* 화면 상단에서 526px 마진 */
+    top: 37.04vh;
+    z-index: 15;
+    pointer-events: none;
+}
+
+/* Slide 2 */
+.slide-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 슬라이드 2 - 타이틀 "MOONY" */
+.slide-2-title {
+    position: absolute;
+    top: 16.67vh;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    line-height: 0; /* 내부 이미지 높이에만 맞추기 */
+}
+
+/* 슬라이드 2 - 타이틀 로고 이미지 (텍스트 로고와 동일 크기/비율 유지) */
+.slide-2-title-img {
+    display: block;
+    height: 1.25vw; /* 기존 텍스트 로고의 font-size와 동일 */
+    width: auto;
+}
+
+/* 슬라이드 2 - 부제목 */
+.slide-2-subtitle {
+    position: absolute;
+    top: 20.74vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600; /* semibold */
+    font-size: 3.13vw;
+    color: #ffffff;
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* 슬라이드 2 - 설명 */
+.slide-2-description {
+    position: absolute;
+    top: 30.37vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.67vw;
+    color: #ffffff;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.slide-2-description .moony-text {
+    font-family: 'Ria sans', sans-serif;
+    font-weight: 800; /* extrabold */
+    letter-spacing: -0.125em; /* -12.5% */
+}
+
+/* 인라인 MOONY 로고 공통 이미지 (텍스트 크기에 맞춰 자동 스케일) */
+.moony-inline-logo {
+    display: inline-block;
+    height: 1em;          /* 부모 글자의 font-size와 동일한 높이 */
+    width: auto;
+    /* 인접 텍스트와 세로 중앙 정렬 */
+    vertical-align: middle;
+}
+
+.slide-2-description .regular-text {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400; /* regular */
+}
+
+/* 슬라이드 2 - 글래스모피즘 박스 (공통) */
+.slide-2-glass-box {
+    position: absolute;
+    top: 43.89vh;
+    width: 17.92vw;
+    height: 37.04vh;
+    border-radius: 1.04vw;
+    /* 글래스모피즘 배경 (기본 50% 투명도) */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(0.52vw);
+    -webkit-backdrop-filter: blur(0.52vw);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* 내부 하이라이트 */
+    box-shadow: 
+        inset 0 0.09vh 0.09vh rgba(255, 255, 255, 0.3),
+        inset 0 -0.09vh 0.09vh rgba(0, 0, 0, 0.1),
+        0 0.37vh 0.74vh rgba(0, 0, 0, 0.2);
+    /* 기본 투명도 50% */
+    opacity: 0.5;
+    cursor: pointer;
+    /* 부드러운 전환 애니메이션 */
+    transition: 
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease,
+        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.4s ease;
+}
+
+/* 왼쪽 박스 위치 */
+.slide-2-glass-box-left {
+    left: 50%;
+    transform: translateX(calc(-50% - 22.71vw));
+}
+
+/* 중앙 박스 위치 */
+.slide-2-glass-box-center {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 오른쪽 박스 위치 */
+.slide-2-glass-box-right {
+    left: 50%;
+    transform: translateX(calc(-50% + 22.71vw));
+}
+
+/* 글래스모피즘 박스 내부 아이콘 */
+.glass-box-icon {
+    position: absolute;
+    width: 9.38vw;
+    height: auto;
+    top: 1.11vh;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 글래스모피즘 박스 내부 타이틀 */
+.glass-box-title {
+    position: absolute;
+    top: 17.41vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400; /* regular */
+    font-size: 1.67vw;
+    color: #ffffff;
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* 글래스모피즘 박스 내부 항목들 */
+.glass-box-item {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400; /* regular */
+    font-size: 1.04vw;
+    color: #ffffff;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.glass-box-item:nth-of-type(1) {
+    top: 25.56vh;
+}
+
+.glass-box-item:nth-of-type(2) {
+    top: 28.52vh;
+}
+
+.glass-box-item:nth-of-type(3) {
+    top: 31.48vh;
+}
+
+.slide-2-glass-box:hover {
+    /* 호버 시 투명도 100% */
+    opacity: 1;
+    /* 호버 시 글래스모피즘 강화 */
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(0.78vw);
+    -webkit-backdrop-filter: blur(0.78vw);
+    border-color: rgba(255, 255, 255, 0.5);
+    /* 더 강한 하이라이트 */
+    box-shadow: 
+        inset 0 0.09vh 0.19vh rgba(255, 255, 255, 0.5),
+        inset 0 -0.09vh 0.19vh rgba(0, 0, 0, 0.1),
+        0 0.74vh 1.48vh rgba(0, 0, 0, 0.3),
+        0 0 1.04vw rgba(255, 255, 255, 0.2);
+}
+
+/* 각 박스별 호버 시 transform */
+.slide-2-glass-box-left:hover {
+    transform: translateX(calc(-50% - 22.71vw)) translateY(-0.37vh) scale(1.02);
+}
+
+.slide-2-glass-box-center:hover {
+    transform: translateX(-50%) translateY(-0.37vh) scale(1.02);
+}
+
+.slide-2-glass-box-right:hover {
+    transform: translateX(calc(-50% + 22.71vw)) translateY(-0.37vh) scale(1.02);
+}
+
+/* Slide 3 */
+.slide-3 {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 슬라이드 3, 4 - 타이틀 */
+.slide-3-title,
+.slide-4-title {
+    position: absolute;
+    top: 16.11vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.67vw;
+    color: #ffffff;
+    margin: 0;
+}
+
+.slide-3-title .moony-text,
+.slide-4-title .moony-text {
+    font-family: 'Ria sans', sans-serif;
+    font-weight: 800; /* extrabold */
+    letter-spacing: -0.125em; /* -12.5% */
+}
+
+.slide-3-title .regular-text,
+.slide-4-title .regular-text {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400; /* regular */
+}
+
+/* 슬라이드 3 - 박스 (글래스모피즘) */
+.slide-3-box {
+    position: absolute;
+    width: 29.58vw;
+    height: 26.30vh;
+    border-radius: 1.88vw;
+    /* 글래스모피즘 배경 */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(0.52vw);
+    -webkit-backdrop-filter: blur(0.52vw);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    /* 내부 하이라이트 */
+    box-shadow: 
+        inset 0 0.09vh 0.09vh rgba(255, 255, 255, 0.3),
+        inset 0 -0.09vh 0.09vh rgba(0, 0, 0, 0.1),
+        0 0.37vh 0.74vh rgba(0, 0, 0, 0.2);
+    /* 부드러운 전환 애니메이션 */
+    transition: 
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease,
+        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 슬라이드 3 - 박스 위치 (2x2 그리드) */
+/* 좌상단 (원본) */
+.slide-3-box-1 {
+    top: 27.78vh;
+    left: calc(50% - 30.10vw);
+}
+
+/* 우상단 (원본 우측에 20px 마진) */
+.slide-3-box-2 {
+    top: 27.78vh;
+    left: calc(50% + 0.52vw);
+}
+
+/* 좌하단 (원본 하단에 20px 마진) */
+.slide-3-box-3 {
+    top: 55.93vh;
+    left: calc(50% - 30.10vw);
+}
+
+/* 우하단 (원본 우측+하단에 각각 20px 마진) */
+.slide-3-box-4 {
+    top: 55.93vh;
+    left: calc(50% + 0.52vw);
+}
+
+.slide-3-box:hover {
+    /* 호버 시 글래스모피즘 강화 */
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(0.78vw);
+    -webkit-backdrop-filter: blur(0.78vw);
+    border-color: rgba(255, 255, 255, 0.5);
+    /* 더 강한 하이라이트 */
+    box-shadow: 
+        inset 0 0.09vh 0.19vh rgba(255, 255, 255, 0.5),
+        inset 0 -0.09vh 0.19vh rgba(0, 0, 0, 0.1),
+        0 0.56vh 1.48vh rgba(0, 0, 0, 0.3),
+        0 0 1.04vw rgba(255, 255, 255, 0.2);
+    /* 살짝 위로 떠오르는 효과 */
+    transform: translateY(-0.37vh) scale(1.02);
+}
+
+/* 슬라이드 3 박스 내부 요소들 */
+.slide-3-box-number {
+    position: absolute;
+    top: 6.30vh; /* 원래 위치로 복구 */
+    left: 2.50vw;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600; /* semibold */
+    font-size: 1.67vw;
+    color: #8EA5FF;
+    margin: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.slide-3-box-title {
+    position: absolute;
+    top: 6.30vh; /* 원래 위치로 복구 */
+    left: 6.25vw;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600; /* semibold */
+    font-size: 1.67vw;
+    color: #ffffff;
+    margin: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.slide-3-box-description {
+    position: absolute;
+    top: 13.52vh; /* 원래 위치로 복구 */
+    left: 2.50vw;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400; /* regular */
+    font-size: 1.25vw;
+    color: #b9b9b9;
+    margin: 0;
+    line-height: 1.4;
+    text-align: left; /* 설명 문단 좌측 정렬 */
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.slide-3-box-image {
+    position: absolute;
+    width: 8.91vw;
+    height: auto;
+    left: 20.42vw;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 1s ease, transform 0.5s ease;
+}
+
+/* 박스 1의 이미지는 원래 위치로 */
+.slide-3-box-1 .slide-3-box-image {
+    left: 19.38vw;
+}
+
+/* 박스 2와 3의 이미지는 원본 비율 유지 */
+.slide-3-box-2 .slide-3-box-image,
+.slide-3-box-3 .slide-3-box-image {
+    height: auto;
+}
+
+/* 이미지 위아래 이동 애니메이션 */
+@keyframes floatUpDown {
+    0% {
+        transform: translateY(calc(-50% - 1.85vh));
+    }
+    50% {
+        transform: translateY(calc(-50% + 1.85vh));
+    }
+    100% {
+        transform: translateY(calc(-50% - 1.85vh));
+    }
+}
+
+/* 박스 호버 시에만 이미지 애니메이션 */
+.slide-3-box:hover .slide-3-box-image {
+    animation: floatUpDown 2s ease-in-out infinite;
+}
+
+/* 박스 호버 시 또는 revealed 클래스가 있을 때 내부 요소들 페이드 인 */
+.slide-3-box:hover .slide-3-box-number,
+.slide-3-box:hover .slide-3-box-title,
+.slide-3-box:hover .slide-3-box-description,
+.slide-3-box:hover .slide-3-box-image,
+.slide-3-box.revealed .slide-3-box-number,
+.slide-3-box.revealed .slide-3-box-title,
+.slide-3-box.revealed .slide-3-box-description,
+.slide-3-box.revealed .slide-3-box-image {
+    opacity: 1;
+}
+
+/* 슬라이드 3 - 중앙 세로 선 */
+.slide-3-line {
+    position: absolute;
+    width: 20px;
+    height: 300px;
+    background: #ffffff;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 슬라이드 3 - 중앙 가로 선 */
+.slide-3-line-horizontal {
+    position: absolute;
+    width: 300px;
+    height: 20px;
+    background: #ffffff;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Slide 4 */
+.slide-4 {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 슬라이드 4 - 박스 (공통) */
+.slide-4-box {
+    position: absolute;
+    width: 20.21vw;
+    height: 60.74vh;
+    border-radius: 1.88vw;
+    top: 24.81vh;
+    /* 배경: 검정 20% 투명도 */
+    background: rgba(0, 0, 0, 0.2);
+    /* 블러 효과 */
+    backdrop-filter: blur(0.52vw);
+    -webkit-backdrop-filter: blur(0.52vw);
+    /* 그라데이션 테두리를 위한 설정 */
+    padding: 1px;
+    background-clip: padding-box;
+    overflow: hidden;
+    cursor: pointer;
+    /* 부드러운 전환 */
+    transition: 
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        transform 0.4s ease;
+}
+
+/* 좌측 박스 */
+.slide-4-box-left {
+    left: 50%;
+    transform: translateX(calc(-50% - 20.83vw));
+}
+
+/* 중앙 박스 */
+.slide-4-box-center {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 우측 박스 */
+.slide-4-box-right {
+    left: 50%;
+    transform: translateX(calc(-50% + 20.83vw));
+}
+
+/* 호버 시 글래스모피즘 강화 */
+.slide-4-box:hover {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(0.78vw);
+    -webkit-backdrop-filter: blur(0.78vw);
+}
+
+.slide-4-box-left:hover {
+    transform: translateX(calc(-50% - 20.83vw)) translateY(-0.19vh) scale(1.01);
+}
+
+.slide-4-box-center:hover {
+    transform: translateX(-50%) translateY(-0.19vh) scale(1.01);
+}
+
+.slide-4-box-right:hover {
+    transform: translateX(calc(-50% + 20.83vw)) translateY(-0.19vh) scale(1.01);
+}
+
+/* 그라데이션 테두리 (::before 가상 요소 사용) */
+.slide-4-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 1.88vw;
+    padding: 1px;
+    /* 상단 #b9b9b9에서 하단 #000000으로 그라데이션 */
+    background: linear-gradient(to bottom, rgba(185, 185, 185, 0.5), rgba(0, 0, 0, 0.5));
+    /* 테두리만 보이도록 마스크 적용 */
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 대각선 반짝임 효과 (::after 가상 요소 사용) */
+.slide-4-box::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 40%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 60%,
+        transparent 100%
+    );
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    transition: transform 1s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* 호버 시 대각선 반짝임 애니메이션 실행 */
+.slide-4-box:hover::after {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+}
+
+/* 슬라이드 4 박스 내부 타이틀 */
+.slide-4-box-title {
+    position: absolute;
+    top: 2.96vh;
+    left: 1.67vw;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600; /* semibold */
+    font-size: 1.46vw;
+    color: #ffffff;
+    margin: 0;
+    white-space: nowrap;
+    z-index: 3;
+}
+
+/* 슬라이드 4 박스 내부 부제목 */
+.slide-4-box-subtitle {
+    position: absolute;
+    top: 6.67vh;
+    left: 1.67vw;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 300; /* light */
+    font-size: 0.73vw;
+    color: #5a5a5a;
+    margin: 0;
+    white-space: nowrap;
+    z-index: 3;
+}
+
+/* 좌측 박스의 부제목만 중앙정렬 */
+.slide-4-box-left .slide-4-box-subtitle {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 슬라이드 4 박스 내부 이미지들 */
+.slide-4-image-1,
+.slide-4-image-2,
+.slide-4-image-3 {
+    position: absolute;
+    width: 5.21vw;
+    height: auto;
+    z-index: 3;
+}
+
+.slide-4-image-1 {
+    top: 11.11vh;
+    left: 0.63vw;
+}
+
+.slide-4-image-2 {
+    top: 27.87vh;
+    left: 0.63vw;
+}
+
+.slide-4-image-3 {
+    top: 44.63vh;
+    left: 0.63vw;
+}
+
+/* 슬라이드 4 박스 내부 텍스트 - 타이틀들 */
+.slide-4-text-title-1,
+.slide-4-text-title-2,
+.slide-4-text-title-3 {
+    position: absolute;
+    left: 6.25vw;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400; /* regular */
+    font-size: 0.83vw;
+    color: #ffffff;
+    margin: 0;
+    white-space: nowrap;
+    z-index: 3;
+}
+
+.slide-4-text-title-1 {
+    top: 11.48vh;
+}
+
+.slide-4-text-title-2 {
+    top: 28.15vh;
+}
+
+.slide-4-text-title-3 {
+    top: 45.00vh;
+}
+
+/* 슬라이드 4 박스 내부 텍스트 - 설명들 */
+.slide-4-text-desc-1,
+.slide-4-text-desc-2,
+.slide-4-text-desc-3 {
+    position: absolute;
+    left: 6.25vw;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400; /* regular */
+    font-size: 0.83vw;
+    color: #808080;
+    margin: 0;
+    line-height: 1.5;
+    text-align: left;
+    z-index: 3;
+}
+
+.slide-4-text-desc-1 {
+    top: 14.35vh;
+}
+
+.slide-4-text-desc-2 {
+    top: 31.11vh;
+}
+
+.slide-4-text-desc-3 {
+    top: 47.78vh;
+}
+
+/* Slide 5 */
+.slide-5 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 슬라이드 5 - 타이틀 */
+.slide-5-title {
+    position: absolute;
+    top: 36.11vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3.13vw;
+    color: #ffffff;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.slide-5-title .moony-text {
+    font-family: 'Ria sans', sans-serif;
+    font-weight: 800; /* extrabold */
+    letter-spacing: -0.125em; /* -12.5% */
+}
+
+.slide-5-title .regular-text {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600; /* semibold */
+}
+
+/* 슬라이드 5 - 버튼 공통 스타일 */
+.slide-5-btn {
+    position: absolute;
+    top: 50.28vh;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400; /* regular */
+    color: #ffffff;
+    /* 글래스모피즘 배경 */
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(0.52vw);
+    -webkit-backdrop-filter: blur(0.52vw);
+    /* 그라데이션 테두리를 위한 설정 */
+    padding: 1px;
+    background-clip: padding-box;
+    overflow: hidden;
+    /* 텍스트 중앙 정렬 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 부드러운 전환 */
+    transition: 
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        transform 0.4s ease;
+}
+
+/* 네! 버튼 */
+.slide-5-btn-yes {
+    left: 40.52vw;
+    width: 11.46vw;
+    height: 8.33vh;
+    font-size: 2.08vw;
+}
+
+/* 아니오 버튼 */
+.slide-5-btn-no {
+    right: 40.52vw;
+    width: 4.79vw;
+    height: 8.52vh;
+    font-size: 1.25vw;
+}
+
+/* 버튼 호버 효과 */
+.slide-5-btn:hover {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(0.78vw);
+    -webkit-backdrop-filter: blur(0.78vw);
+    transform: translateY(-0.19vh) scale(1.02);
+}
+
+/* 그라데이션 테두리 (::before 가상 요소) */
+.slide-5-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 999px;
+    padding: 1px;
+    /* 상단 #b9b9b9에서 하단 #000000으로 그라데이션 */
+    background: linear-gradient(to bottom, rgba(185, 185, 185, 0.5), rgba(0, 0, 0, 0.5));
+    /* 테두리만 보이도록 마스크 적용 */
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 대각선 반짝임 효과 (::after 가상 요소) */
+.slide-5-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 40%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 60%,
+        transparent 100%
+    );
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    transition: transform 1s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* 호버 시 대각선 반짝임 애니메이션 실행 */
+.slide-5-btn:hover::after {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+}
+
+/* 버튼 텍스트가 가상 요소 위에 표시되도록 */
+.slide-5-btn span {
+    position: relative;
+    z-index: 3;
+}
+
+/* 스크롤 안내 (고정 위치) */
+.scroll-indicator {
+    position: fixed;
+    /* 좌우 중앙정렬 */
+    left: 50%;
+    transform: translateX(-50%);
+    /* 화면 하단에서 80px 마진 */
+    bottom: 7.41vh;
+    z-index: 1000;
+    pointer-events: none;
+    /* 투명도 전환 애니메이션 (1초) */
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+/* 스크롤 안내 이미지 */
+.scroll-indicator-image {
+    display: block;
+    width: 10.42vw;
+    height: auto;
+    /* 회전 애니메이션 (1분 = 60초) */
+    animation: rotateScroll 60s linear infinite;
+}
+
+/* 스크롤 이미지 회전 애니메이션 */
+@keyframes rotateScroll {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 화살표 이미지 */
+.scroll-indicator-arrow {
+    position: absolute;
+    width: 1.46vw;
+    height: auto;
+    /* 컨테이너(스크롤 이미지) 정중앙에 배치 */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+/* ============================================ */
+/* 모바일 반응형 디자인 */
+/* ============================================ */
+
+/* 📱 태블릿 (1024px 이하) */
+@media (max-width: 1024px) {
+    /* Slide 1 */
+    .slide-1-logo {
+        width: 60vw;
+        top: 10vh;
+    }
+
+    .slide-1-image {
+        width: 70vw;
+        top: 25vh;
+    }
+
+    .slide-1-shadow {
+        width: 90vw;
+        top: 35vh;
+    }
+
+    /* Slide 2 */
+    .slide-2-title {
+        top: 12vh;
+    }
+    
+    .slide-2-title-img {
+        height: 1.8vw; /* 태블릿에서 기존 텍스트 font-size와 동일 높이 */
+    }
+
+    .slide-2-subtitle {
+        top: 16vh;
+        font-size: 4vw;
+    }
+
+    .slide-2-description {
+        top: 24vh;
+        font-size: 2.2vw;
+    }
+
+    .slide-2-glass-box {
+        width: 25vw;
+        height: 40vh;
+        top: 35vh;
+        border-radius: 1.5vw;
+    }
+
+    .slide-2-glass-box-left {
+        transform: translateX(calc(-50% - 28vw));
+    }
+
+    .slide-2-glass-box-right {
+        transform: translateX(calc(-50% + 28vw));
+    }
+
+    .slide-2-glass-box-left:hover {
+        transform: translateX(calc(-50% - 28vw)) translateY(-0.5vh) scale(1.02);
+    }
+
+    .slide-2-glass-box-right:hover {
+        transform: translateX(calc(-50% + 28vw)) translateY(-0.5vh) scale(1.02);
+    }
+
+    .glass-box-icon {
+        width: 12vw;
+        top: 2vh;
+    }
+
+    .glass-box-title {
+        top: 18vh;
+        font-size: 2.2vw;
+    }
+
+    .glass-box-item {
+        font-size: 1.4vw;
+    }
+
+    .glass-box-item:nth-of-type(1) {
+        top: 25vh;
+    }
+
+    .glass-box-item:nth-of-type(2) {
+        top: 28vh;
+    }
+
+    .glass-box-item:nth-of-type(3) {
+        top: 31vh;
+    }
+
+    /* Slide 3, 4 */
+    .slide-3-title,
+    .slide-4-title {
+        top: 12vh;
+        font-size: 2.2vw;
+    }
+
+    .slide-3-box {
+        width: 42vw;
+        height: 28vh;
+        border-radius: 2.5vw;
+    }
+
+    .slide-3-box-1 {
+        top: 22vh;
+        left: calc(50% - 43vw);
+    }
+
+    .slide-3-box-2 {
+        top: 22vh;
+        left: calc(50% + 1vw);
+    }
+
+    .slide-3-box-3 {
+        top: 52vh;
+        left: calc(50% - 43vw);
+    }
+
+    .slide-3-box-4 {
+        top: 52vh;
+        left: calc(50% + 1vw);
+    }
+
+    .slide-3-box-number,
+    .slide-3-box-title {
+        top: 5vh;
+        font-size: 2.2vw;
+    }
+
+    .slide-3-box-number {
+        left: 3vw;
+    }
+
+    .slide-3-box-title {
+        left: 8vw;
+    }
+
+    .slide-3-box-description {
+        top: 12vh;
+        left: 3vw;
+        font-size: 1.6vw;
+    }
+
+    .slide-3-box-image {
+        width: 12vw;
+        left: 28vw;
+    }
+
+    .slide-3-box-1 .slide-3-box-image {
+        left: 27vw;
+    }
+
+    /* Slide 4 */
+    .slide-4-box {
+        width: 28vw;
+        height: 62vh;
+        top: 22vh;
+    }
+
+    .slide-4-box-left {
+        transform: translateX(calc(-50% - 30vw));
+    }
+
+    .slide-4-box-right {
+        transform: translateX(calc(-50% + 30vw));
+    }
+
+    .slide-4-box-left:hover {
+        transform: translateX(calc(-50% - 30vw)) translateY(-0.3vh) scale(1.01);
+    }
+
+    .slide-4-box-right:hover {
+        transform: translateX(calc(-50% + 30vw)) translateY(-0.3vh) scale(1.01);
+    }
+
+    .slide-4-box-title {
+        font-size: 1.8vw;
+        top: 3vh;
+        left: 2vw;
+    }
+
+    .slide-4-box-subtitle {
+        font-size: 0.9vw;
+        top: 7vh;
+        left: 2vw;
+    }
+
+    .slide-4-image-1,
+    .slide-4-image-2,
+    .slide-4-image-3 {
+        width: 7vw;
+        left: 1vw;
+    }
+
+    .slide-4-text-title-1,
+    .slide-4-text-title-2,
+    .slide-4-text-title-3 {
+        font-size: 1.1vw;
+        left: 8.5vw;
+    }
+
+    .slide-4-text-desc-1,
+    .slide-4-text-desc-2,
+    .slide-4-text-desc-3 {
+        font-size: 1.1vw;
+        left: 8.5vw;
+    }
+
+    /* Slide 5 */
+    .slide-5-title {
+        top: 38vh;
+        font-size: 4vw;
+    }
+
+    .slide-5-btn-yes {
+        left: 38vw;
+        width: 15vw;
+        height: 9vh;
+        font-size: 2.6vw;
+    }
+
+    .slide-5-btn-no {
+        right: 38vw;
+        width: 6vw;
+        height: 9vh;
+        font-size: 1.6vw;
+    }
+
+    /* 스크롤 인디케이터 */
+    .scroll-indicator {
+        bottom: 5vh;
+    }
+
+    .scroll-indicator-image {
+        width: 15vw;
+    }
+
+    .scroll-indicator-arrow {
+        width: 2vw;
+    }
+}
+
+/* 📱 모바일 (768px 이하) */
+@media (max-width: 768px) {
+    /* 모바일에서 슬라이드 2~5 전체를 약 15% 상단으로 이동 */
+    .slide-2,
+    .slide-3,
+    .slide-4,
+    .slide-5 {
+        transform: translateY(-15vh);
+    }
+
+    /* Slide 1 */
+    .slide-1-logo {
+        width: 70vw;
+        top: 15vh;
+        left: 50%; /* 좌우 위치 조절 (50% = 중앙) */
+        transform: translateX(-50%); /* 중앙 정렬 */
+    }
+
+    .slide-1-image {
+        width: 85vw;
+        top: 45vh; /* 이미지 상단이 화면 절반 정도로 내림 */
+        left: 50%; /* 좌우 위치 조절 (50% = 중앙) */
+        transform: translateX(-50%); /* 중앙 정렬 */
+    }
+
+    .slide-1-shadow {
+        width: 100vw;
+        top: 63vh; /* 달 이미지보다 약간 아래로 배치 */
+        left: 50%; /* 좌우 위치 조절 (50% = 중앙) */
+        transform: translateX(-50%); /* 중앙 정렬 */
+    }
+
+    /* Slide 2 */
+    .slide-2-title {
+        top: 15vh; /* 헤더와 간격 확보 */
+    }
+    .slide-2-title-img {
+        height: 2.8vw; /* 모바일에서 기존 텍스트 font-size와 동일 높이 */
+    }
+
+    .slide-2-subtitle {
+        top: 19vh; /* 헤더와 간격 확보 */
+        font-size: 5vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+    }
+
+    .slide-2-description {
+        top: 26vh; /* 간격 조정 */
+        font-size: 2.8vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+    }
+
+    /* 박스를 세로로 배치 */
+    .slide-2-glass-box {
+        width: 70vw;
+        height: 24vh;
+        top: 34vh; /* 헤더와 간격 확보, 겹치지 않게 */
+    }
+
+    .slide-2-glass-box-left {
+        transform: translateX(-50%);
+        top: 34vh;
+    }
+
+    .slide-2-glass-box-center {
+        top: 60vh; /* 겹치지 않게 간격 조정 */
+    }
+
+    .slide-2-glass-box-right {
+        transform: translateX(-50%);
+        top: 86vh; /* 겹치지 않게 간격 조정 */
+    }
+
+    .slide-2-glass-box-left:hover,
+    .slide-2-glass-box-center:hover,
+    .slide-2-glass-box-right:hover {
+        transform: translateX(-50%) translateY(-0.5vh) scale(1.02);
+    }
+
+    .glass-box-icon {
+        /* 박스 높이의 45% 비율 유지 */
+        height: 45%;
+        width: auto;
+        /* 원래 위치로 복구 (1vh) */
+        top: 1vh;
+    }
+
+    .glass-box-title {
+        top: 12vh;
+        font-size: 3.8vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+    }
+
+    .glass-box-item {
+        font-size: 2.4vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+    }
+
+    .glass-box-item:nth-of-type(1) {
+        top: 16vh;
+    }
+
+    .glass-box-item:nth-of-type(2) {
+        top: 18.5vh;
+    }
+
+    .glass-box-item:nth-of-type(3) {
+        top: 21vh;
+    }
+
+    /* Slide 3, 4 */
+    .slide-3-title,
+    .slide-4-title {
+        top: 8vh; /* 헤더와 간격 확보 */
+        font-size: 2.8vw; /* 한 줄로 표시되도록 크기 축소 */
+        width: 95vw; /* 텍스트 영역을 화면 전체로 확장 */
+        max-width: 95vw;
+        white-space: nowrap; /* 강제로 한 줄 유지 */
+    }
+
+    /* 박스를 세로로 배치 */
+    .slide-3-box {
+        width: 85vw;
+        height: 19vh;
+    }
+
+    .slide-3-box-1 {
+        top: 19vh; /* 헤더와 간격 확보 */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .slide-3-box-2 {
+        top: 40vh; /* 겹치지 않게 간격 조정 */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .slide-3-box-3 {
+        top: 61vh; /* 겹치지 않게 간격 조정 */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .slide-3-box-4 {
+        top: 82vh; /* 겹치지 않게 간격 조정 */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .slide-3-box:hover {
+        transform: translateX(-50%) translateY(-0.5vh) scale(1.02);
+    }
+
+    .slide-3-box-number,
+    .slide-3-box-title {
+        top: 5vh; /* 기존 3.5vh 에서 2vh 하강 */
+        font-size: 3.5vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+    }
+
+    .slide-3-box-number {
+        left: 5vw;
+    }
+
+    .slide-3-box-title {
+        left: 13vw;
+    }
+
+    .slide-3-box-description {
+        top: 10.5vh; /* 기존 9vh 에서 2vh 하강 */
+        left: 5vw;
+        font-size: 2.5vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+        line-height: 1.4;
+    }
+
+    .slide-3-box-image {
+        width: 20vw;
+        left: 62vw;
+    }
+
+    .slide-3-box-1 .slide-3-box-image {
+        left: 60vw;
+    }
+
+    /* Slide 4 - 세로 스크롤로 변경 */
+    .slide-4-box {
+        width: 90vw;
+        height: 26.4vh; /* 박스 높이 20% 증가 (22vh * 1.2) */
+        left: 50%;
+    }
+
+    .slide-4-box-left {
+        transform: translateX(-50%);
+        top: 18vh; /* 위치 10vh 상향 조정 */
+    }
+
+    .slide-4-box-center {
+        transform: translateX(-50%);
+        top: 46vh; /* 위치 10vh 상향 조정 */
+    }
+
+    .slide-4-box-right {
+        transform: translateX(-50%);
+        top: 74vh; /* 위치 10vh 상향 조정 */
+    }
+
+    .slide-4-box-left:hover,
+    .slide-4-box-center:hover,
+    .slide-4-box-right:hover {
+        transform: translateX(-50%) translateY(-0.3vh) scale(1.01);
+    }
+
+    .slide-4-box-title {
+        font-size: 3vw;
+        top: 2vh; /* 위치 조정 */
+        left: 50%; /* 중앙 정렬 */
+        transform: translateX(-50%);
+        text-align: center;
+    }
+
+    .slide-4-box-subtitle {
+        font-size: 1.7vw;
+        top: 5.5vh; /* 위치 조정 */
+        left: 50%; /* 중앙 정렬 */
+        transform: translateX(-50%);
+        text-align: center;
+    }
+
+    .slide-4-image-1,
+    .slide-4-image-2,
+    .slide-4-image-3 {
+        width: 14vw; /* 이미지 크기 증가 */
+        top: 9vh; /* 위치 조정 */
+    }
+
+    .slide-4-image-1 {
+        left: 15vw; /* 첫 번째 영역 중앙 (90vw / 3 / 2 = 15vw) */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-image-2 {
+        left: 45vw; /* 두 번째 영역 중앙 (90vw / 2 = 45vw) */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-image-3 {
+        left: 75vw; /* 세 번째 영역 중앙 (90vw * 5/6 = 75vw) */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-title-1,
+    .slide-4-text-title-2,
+    .slide-4-text-title-3 {
+        font-size: 2.2vw; /* 폰트 크기 증가 */
+        top: 18vh; /* 위치 조정 */
+        text-align: center;
+    }
+
+    .slide-4-text-title-1 {
+        left: 15vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-title-2 {
+        left: 45vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-title-3 {
+        left: 75vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-desc-1,
+    .slide-4-text-desc-2,
+    .slide-4-text-desc-3 {
+        font-size: 1.8vw; /* 폰트 크기 증가 */
+        top: 21vh; /* 위치 조정 */
+        line-height: 1.3;
+        width: 24vw;
+        text-align: justify; /* 양끝 맞춤 */
+        text-align-last: left; /* 마지막 줄만 왼쪽 정렬 */
+    }
+
+    /* 모바일에서 BR 태그 숨김 */
+    .slide-4-text-desc-1 br,
+    .slide-4-text-desc-2 br,
+    .slide-4-text-desc-3 br {
+        display: none;
+    }
+
+    .slide-4-text-desc-1 {
+        left: 15vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-desc-2 {
+        left: 45vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-desc-3 {
+        left: 75vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    /* Slide 5 */
+    .slide-5-title {
+        top: 40vh;
+        font-size: 2.8vw; /* slide-3-title과 동일 크기, 한 줄로 표시 */
+        width: 95vw; /* 텍스트 영역을 화면 전체로 확장 */
+        max-width: 95vw;
+        white-space: nowrap; /* 강제로 한 줄 유지 */
+    }
+
+    .slide-5-btn-yes {
+        left: 32vw;
+        width: 20vw;
+        height: 8vh;
+        font-size: 3.5vw;
+    }
+
+    .slide-5-btn-no {
+        right: 32vw;
+        width: 8vw;
+        height: 8vh;
+        font-size: 2.2vw;
+    }
+
+    /* 스크롤 인디케이터 */
+    .scroll-indicator {
+        bottom: 8vh;
+    }
+
+    .scroll-indicator-image {
+        width: 20vw;
+    }
+
+    .scroll-indicator-arrow {
+        width: 3vw;
+    }
+}
+
+/* 📱 초소형 모바일 (480px 이하) */
+@media (max-width: 480px) {
+    /* 전체 슬라이드 컨테이너 높이를 안전 뷰포트 기준으로 설정 */
+    .swiper {
+        height: 100svh;
+    }
+
+    /* Slide 1 */
+    .slide-1-logo {
+        width: 100vw;
+        top: 18vh;
+        left: 54%; /* 좌우 위치 조절 (50% = 중앙) */
+        transform: translateX(-50%); /* 중앙 정렬 */
+    }
+
+    .slide-1-image {
+        width: 200vw;
+        top: 30vh; /* 이미지 상단이 화면 절반 정도로 */
+        left: 50%; /* 좌우 위치 조절 (50% = 중앙) */
+        transform: translateX(-50%); /* 중앙 정렬 */
+    }
+
+    .slide-1-shadow {
+        width: 230vw;
+        top: 38vh; /* 달 이미지보다 약간 아래로 배치 */
+        left: 50%; /* 좌우 위치 조절 (50% = 중앙) */
+        transform: translateX(-50%); /* 중앙 정렬 */
+    }
+
+    /* Slide 2 */
+    .slide-2-title {
+        top: 8vh; /* 헤더와 간격 확보 */
+    }
+
+    .slide-2-title-img {
+        height: 3.8vw; /* 초소형 모바일에서 기존 텍스트 font-size와 동일 높이 */
+    }
+
+    .slide-2-subtitle {
+        top: 11vh;
+        font-size: 6vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+    }
+
+    .slide-2-description {
+        top: 15vh;
+        font-size: 3.8vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+    }
+
+    .slide-2-glass-box {
+        width: 80vw;
+        height: 21vh;
+    }
+
+    .slide-2-glass-box-left {
+        top: 19vh; /* 헤더와 간격 확보 */
+    }
+
+    .slide-2-glass-box-center {
+        top: 41vh; /* 겹치지 않게 간격 조정 */
+    }
+
+    .slide-2-glass-box-right {
+        top: 63vh; /* 겹치지 않게 간격 조정 */
+    }
+
+    .glass-box-icon {
+        /* 박스 높이의 45% 비율 유지 */
+        height: 45%;
+        width: auto;
+        /* 원래 위치로 복구 (0.5vh) */
+        top: 0.5vh;
+    }
+
+    .glass-box-title {
+        top: 10.5vh;
+        font-size: 4.8vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+    }
+
+    .glass-box-item {
+        font-size: 3vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+    }
+
+    .glass-box-item:nth-of-type(1) {
+        top: 14vh;
+    }
+
+    .glass-box-item:nth-of-type(2) {
+        top: 16.3vh;
+    }
+
+    .glass-box-item:nth-of-type(3) {
+        top: 18.6vh;
+    }
+
+    /* Slide 3, 4 */
+    .slide-3-title,
+    .slide-4-title {
+        top: 8vh; /* 헤더와 간격 확보 */
+        font-size: 5vw; /* 한 줄로 표시되도록 크기 추가 축소 */
+        width: 95vw; /* 텍스트 영역을 화면 전체로 확장 */
+        max-width: 95vw;
+        white-space: nowrap; /* 강제로 한 줄 유지 */
+    }
+
+    .slide-3-box {
+        width: 90vw;
+        height: 17vh;
+    }
+
+    .slide-3-box-1 {
+        top: 13vh; /* 헤더와 간격 확보 */
+    }
+
+    .slide-3-box-2 {
+        top: 31vh; /* 겹치지 않게 간격 조정 */
+    }
+
+    .slide-3-box-3 {
+        top: 49vh; /* 겹치지 않게 간격 조정 */
+    }
+
+    .slide-3-box-4 {
+        top: 67vh; /* 겹치지 않게 간격 조정 */
+    }
+
+    .slide-3-box-number,
+    .slide-3-box-title {
+        top: 4.3vh; /* 기존 2.8vh 에서 2vh 하강 */
+        font-size: 4.2vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+    }
+
+    .slide-3-box-number {
+        left: 4vw;
+    }
+
+    .slide-3-box-title {
+        left: 12vw;
+    }
+
+    .slide-3-box-description {
+        top: 9vh; /* 기존 7.5vh 에서 2vh 하강 */
+        left: 4vw;
+        font-size: 3vw; /* 화면 밖으로 나가지 않게 크기 축소 */
+        line-height: 1.4;
+    }
+
+    .slide-3-box-image {
+        width: 24vw;
+        left: 63vw;
+    }
+
+    .slide-3-box-1 .slide-3-box-image {
+        left: 61vw;
+    }
+
+    /* Slide 4 */
+    .slide-4-box {
+        width: 92vw;
+        height: 24vh; /* 박스 높이 20% 증가 (20vh * 1.2) */
+    }
+
+    .slide-4-box-left {
+        top: 13vh; /* 위치 10vh 상향 조정 */
+    }
+
+    .slide-4-box-center {
+        top: 37vh; /* 위치 10vh 상향 조정 */
+    }
+
+    .slide-4-box-right {
+        top: 62vh; /* 위치 10vh 상향 조정 */
+    }
+
+    .slide-4-box-title {
+        font-size: 3.8vw; /* 폰트 크기 증가 */
+        top: 1.5vh; /* 위치 조정 */
+        left: 50%; /* 중앙 정렬 */
+        transform: translateX(-50%);
+        text-align: center;
+    }
+
+    .slide-4-box-subtitle {
+        font-size: 2vw; /* 폰트 크기 증가 */
+        top: 5vh; /* 위치 조정 */
+        left: 50%; /* 중앙 정렬 */
+        transform: translateX(-50%);
+        text-align: center;
+    }
+
+    .slide-4-image-1,
+    .slide-4-image-2,
+    .slide-4-image-3 {
+        width: 15vw; /* 이미지 크기 증가 */
+        top: 8vh; /* 위치 조정 */
+    }
+
+    .slide-4-image-1 {
+        left: 15.33vw; /* 첫 번째 영역 중앙 (92vw / 6 = 15.33vw) */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-image-2 {
+        left: 46vw; /* 두 번째 영역 중앙 (92vw / 2 = 46vw) */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-image-3 {
+        left: 76.67vw; /* 세 번째 영역 중앙 (92vw * 5/6 = 76.67vw) */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-title-1,
+    .slide-4-text-title-2,
+    .slide-4-text-title-3 {
+        font-size: 2.5vw; /* 폰트 크기 증가 */
+        top: 15.5vh; /* 위치 조정 */
+        text-align: center;
+    }
+
+    .slide-4-text-title-1 {
+        left: 15.33vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-title-2 {
+        left: 46vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-title-3 {
+        left: 76.67vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-desc-1,
+    .slide-4-text-desc-2,
+    .slide-4-text-desc-3 {
+        font-size: 2vw; /* 폰트 크기 증가 */
+        top: 18.5vh; /* 위치 조정 */
+        line-height: 1.25;
+        width: 26vw;
+        text-align: justify; /* 양끝 맞춤 */
+        text-align-last: left; /* 마지막 줄만 왼쪽 정렬 */
+    }
+
+    /* 모바일에서 BR 태그 숨김 */
+    .slide-4-text-desc-1 br,
+    .slide-4-text-desc-2 br,
+    .slide-4-text-desc-3 br {
+        display: none;
+    }
+
+    .slide-4-text-desc-1 {
+        left: 15.33vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-desc-2 {
+        left: 46vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    .slide-4-text-desc-3 {
+        left: 76.67vw; /* 이미지 중앙에 맞춤 */
+        transform: translateX(-50%);
+    }
+
+    /* Slide 5 */
+    .slide-5-title {
+        top: 38vh;
+        font-size: 5vw; /* slide-3-title과 동일 크기, 한 줄로 표시 */
+        width: 95vw; /* 텍스트 영역을 화면 전체로 확장 */
+        max-width: 95vw;
+        white-space: nowrap; /* 강제로 한 줄 유지 */
+    }
+
+    /* 모바일(480px 이하)에서 버튼 위치를 현재보다 약 7vh 상단으로 이동 */
+    .slide-5-btn {
+        top: 43vh;
+    }
+
+    .slide-5-btn-yes {
+        left: 28vw;
+        width: 28vw;
+        height: 7vh;
+        font-size: 4.5vw;
+    }
+
+    .slide-5-btn-no {
+        right: 28vw;
+        width: 15vw;
+        height: 7vh;
+        font-size: 2.8vw;
+    }
+
+    /* 스크롤 인디케이터 */
+    .scroll-indicator {
+        bottom: 5vh;
+    }
+
+    .scroll-indicator-image {
+        width: 35vw;
+    }
+
+    .scroll-indicator-arrow {
+        width: 4vw;
+    }
+}
