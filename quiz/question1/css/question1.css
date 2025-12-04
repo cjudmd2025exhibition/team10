@@ -1,0 +1,475 @@
+/* 이 페이지에서는 전체 스크롤을 허용 */
+html.quiz-question-page,
+body.quiz-question-page {
+    height: auto;
+    overflow: auto;
+}
+
+/* Quiz Container - slide-4-box 글래스모피즘 스타일 */
+.quiz-container {
+    max-width: 900px;
+    margin: 120px auto 40px;
+    border-radius: 36px;
+    
+    /* slide-4-box 글래스모피즘 배경 */
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    overflow: hidden;
+    position: relative;
+    
+    /* 내부 패딩 */
+    padding: 40px;
+}
+
+/* 그라데이션 테두리 (::before 가상 요소 사용) */
+.quiz-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 36px;
+    padding: 1px;
+    /* 상단 #b9b9b9에서 하단 #000000으로 그라데이션 */
+    background: linear-gradient(to bottom, rgba(185, 185, 185, 0.5), rgba(0, 0, 0, 0.5));
+    /* 테두리만 보이도록 마스크 적용 */
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 대각선 반짝임 효과 (::after 가상 요소 사용) */
+.quiz-container::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 40%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 60%,
+        transparent 100%
+    );
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    transition: transform 1s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* 내부 컨텐츠는 가상 요소 위에 표시 */
+.quiz-container > * {
+    position: relative;
+    z-index: 3;
+}
+
+/* Quiz Header */
+.quiz-header {
+    text-align: center;
+    margin: 40px;
+}
+
+.quiz-header h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+/* Quiz Info - slide-4-box + info-card-front 그라데이션 */
+.quiz-info {
+    border-radius: 36px;
+    position: relative;
+    overflow: hidden;
+    
+    /* slide-4-box 글래스모피즘 배경 */
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    /* 내부 패딩 */
+    padding: 20px;
+}
+
+/* quiz-info 그라데이션 테두리 */
+.quiz-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 36px;
+    padding: 1px;
+    background: linear-gradient(to bottom, rgba(185, 185, 185, 0.5), rgba(0, 0, 0, 0.5));
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* quiz-info 대각선 반짝임 */
+.quiz-info::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 40%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 60%,
+        transparent 100%
+    );
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    transition: transform 1s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.quiz-info-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    position: relative;
+    z-index: 3;
+}
+
+/* 진행 게이지 컨테이너 */
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-top: 15px;
+    overflow: hidden;
+    position: relative;
+    z-index: 3;
+}
+
+/* 진행 게이지 - info-card-front 그라데이션 애니메이션 */
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    
+    /* info-card-front 그라데이션 배경 */
+    background: linear-gradient(270deg, 
+        rgba(0, 0, 0, 0.2), 
+        rgba(255, 255, 255, 0.1), 
+        rgba(255, 255, 255, 0.05), 
+        rgba(0, 0, 0, 0.2));
+    background-size: 400% 400%;
+    
+    /* 그라데이션 애니메이션 */
+    animation: gradientMove 6s ease infinite;
+    
+    /* 부드러운 너비 전환 */
+    transition: width 0.5s ease;
+}
+
+/* 그라데이션 움직임 정의 */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Question Box */
+.question-box {
+    margin: 40px 0;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border-left: 5px solid rgba(255, 255, 255, 0.3);
+}
+
+.question {
+    font-size: 1.5rem;
+    color: #ffffff;
+    line-height: 1.6;
+    font-weight: 600;
+}
+
+/* Answer Options */
+.answer-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+/* Answer Button - login-btn 글래스모피즘 스타일 */
+.answer-btn {
+    padding: 20px 30px;
+    font-size: 1.1rem;
+    text-align: left;
+    border-radius: 16px;
+    
+    /* login-btn 글래스모피즘 배경 */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    
+    color: #ffffff;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    
+    /* 내부 하이라이트 */
+    box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(0, 0, 0, 0.2);
+    
+    /* 부드러운 전환 애니메이션 */
+    transition: 
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease,
+        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* login-btn 호버 효과 */
+.answer-btn:hover:not(.correct):not(.wrong):not(:disabled) {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.5),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+        0 6px 16px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(255, 255, 255, 0.2);
+    transform: scale(1.02);
+}
+
+.answer-btn.correct {
+    background: rgba(40, 167, 69, 0.3);
+    border-color: #28a745;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.answer-btn.wrong {
+    background: rgba(220, 53, 69, 0.3);
+    border-color: #dc3545;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.answer-btn:disabled {
+    cursor: not-allowed;
+}
+
+/* Quiz Navigation */
+.quiz-navigation {
+    text-align: center;
+}
+
+.next-btn {
+    padding: 15px 50px;
+    font-size: 1.2rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600;
+    box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.next-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.5),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+        0 6px 16px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.next-btn:disabled {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Result Screen */
+.result-screen {
+    text-align: center;
+    padding: 40px;
+}
+
+.result-screen.hidden {
+    display: none;
+}
+
+.result-content h2 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.final-score {
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.result-message {
+    font-size: 1.3rem;
+    color: #ffffff;
+    margin-bottom: 40px;
+    line-height: 1.8;
+}
+
+.result-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.retry-btn, .back-btn {
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600;
+}
+
+.retry-btn {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.retry-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.5),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+        0 6px 16px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.back-btn {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 태블릿 (가로폭 1024px 이하) */
+@media (max-width: 1024px) {
+    .quiz-container {
+        margin: 110px 40px 30px;
+        padding: 32px;
+    }
+
+    .quiz-header {
+        margin: 30px;
+    }
+
+    .quiz-header h1 {
+        font-size: 2.2rem;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .quiz-container {
+        margin: 100px 20px 20px;
+        padding: 25px;
+    }
+
+    .quiz-header h1 {
+        font-size: 2rem;
+    }
+
+    .quiz-info-content {
+        flex-direction: column;
+        gap: 10px;
+        font-size: 1rem;
+        padding: 15px 20px;
+    }
+
+    .question {
+        font-size: 1.2rem;
+    }
+
+    .answer-btn {
+        padding: 15px 20px;
+        font-size: 1rem;
+    }
+
+    .result-buttons {
+        flex-direction: column;
+    }
+
+    .retry-btn, .back-btn {
+        width: 100%;
+    }
+}

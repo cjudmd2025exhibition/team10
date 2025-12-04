@@ -1,0 +1,598 @@
+/* 1920x1080 기준 비율 유지를 위한 기본 변수 */
+:root {
+    --quiz-moon-size: 1080px;
+}
+
+/* Quiz Page Styles */
+
+/* Quiz Container */
+.quiz-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* 초승달 이미지 */
+.quiz-moon-image {
+    position: absolute;
+    /* 1920 기준 1080px, 화면이 작아지면 자동 축소 */
+    width: min(var(--quiz-moon-size), 80vw);
+    height: auto;
+    right: clamp(-260px, -10vw, -120px);
+    top: 50%;
+    transform: translateY(-50%) scaleX(-1);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 첫 번째 텍스트 - "MOONY 로 많이 공부하셨나요?" */
+.quiz-main-title {
+    position: absolute;
+    top: 328px;
+    left: 360px;
+    /* 1920 기준 60px, 작은 화면에서는 자동 축소 */
+    font-size: clamp(32px, 3.1vw, 60px);
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.2;
+    z-index: 10;
+}
+
+.quiz-main-title .moony-text {
+    font-family: 'Ria sans', sans-serif;
+    font-weight: 800; /* extrabold */
+    letter-spacing: -0.125em; /* -12.5% */
+}
+
+/* "MOONY" 텍스트 대신 이미지를 사용해도 동일한 위치/크기로 보이도록 */
+.quiz-main-title .moony-text img {
+    display: inline-block;
+    height: 1em;          /* 기존 글자 높이에 맞춤 */
+    width: auto;          /* 비율 유지 */
+    vertical-align: baseline;
+}
+
+.quiz-main-title .regular-text {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600; /* semibold */
+}
+
+/* 두 번째 텍스트 - "달을 얼마나 잘 알고있는지 퀴즈로 확인해봐요!" */
+.quiz-subtitle {
+    position: absolute;
+    top: 526px;
+    left: 360px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600; /* semibold */
+    font-size: clamp(20px, 1.9vw, 36px);
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.4;
+    z-index: 10;
+}
+
+/* 퀴즈 시작 버튼 */
+.quiz-start-btn {
+    position: absolute;
+    top: 676px;
+    left: 360px;
+    width: 130px;
+    height: 62px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 300; /* light */
+    font-size: clamp(16px, 1.2vw, 20px);
+    color: #ffffff;
+    /* 글래스모피즘 배경 */
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* 그라데이션 테두리를 위한 설정 */
+    padding: 1px;
+    background-clip: padding-box;
+    overflow: hidden;
+    /* 텍스트 중앙 정렬 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 부드러운 전환 */
+    transition: 
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        transform 0.4s ease;
+    z-index: 10;
+}
+
+/* 버튼 호버 효과 */
+.quiz-start-btn:hover {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* 그라데이션 테두리 (::before 가상 요소) */
+.quiz-start-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 999px;
+    padding: 1px;
+    /* 상단 #b9b9b9에서 하단 #000000으로 그라데이션 */
+    background: linear-gradient(to bottom, rgba(185, 185, 185, 0.5), rgba(0, 0, 0, 0.5));
+    /* 테두리만 보이도록 마스크 적용 */
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 대각선 반짝임 효과 (::after 가상 요소) */
+.quiz-start-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 40%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 60%,
+        transparent 100%
+    );
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    transition: transform 1s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* 호버 시 대각선 반짝임 애니메이션 실행 */
+.quiz-start-btn:hover::after {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+}
+
+/* 버튼 텍스트가 가상 요소 위에 표시되도록 */
+.quiz-start-btn span {
+    position: relative;
+    z-index: 3;
+}
+
+/* ============================================ */
+/* 로그인 팝업 모달 스타일 */
+/* ============================================ */
+
+/* 팝업 오버레이 (배경) */
+.login-popup-overlay {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* 팝업 컨텐츠 컨테이너 */
+.login-popup-content {
+    position: relative;
+    animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 팝업 닫기 버튼 */
+.login-popup-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10000;
+}
+
+.login-popup-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* 팝업 글래스모피즘 박스 */
+.login-glass-box-popup {
+    position: relative;
+    width: 708px;
+    height: 400px;
+    border-radius: 36px;
+    
+    /* 글래스모피즘 스타일 */
+    background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    
+    /* 내부 하이라이트 */
+    box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(0, 0, 0, 0.2);
+    
+    /* 플렉스박스로 중앙 정렬 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+}
+
+/* 팝업 로그인 폼 스타일 */
+.login-form-popup {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+/* 팝업 로그인 제목 */
+.login-title-popup {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400;
+    font-size: 28pt;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 팝업 입력 필드 컨테이너 */
+.login-input-wrapper-popup {
+    width: 100%;
+    position: relative;
+}
+
+/* 팝업 닉네임 입력 필드 */
+.login-input-popup {
+    width: 100%;
+    height: 60px;
+    padding: 0 24px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 300;
+    font-size: 18pt;
+    color: #fff;
+    
+    transition: all 0.3s ease;
+}
+
+.login-input-popup::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.login-input-popup:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* 팝업 로그인 버튼 */
+.login-submit-btn-popup {
+    width: 100%;
+    height: 60px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400;
+    font-size: 20pt;
+    color: #fff;
+    
+    cursor: pointer;
+    
+    box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(0, 0, 0, 0.2);
+    
+    transition: 
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease,
+        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.login-submit-btn-popup:hover {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.5),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+        0 6px 16px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(255, 255, 255, 0.2);
+    transform: scale(1.02);
+}
+
+.login-submit-btn-popup:active {
+    transform: scale(0.98);
+}
+
+/* 팝업 에러 메시지 */
+.login-error-popup {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 300;
+    font-size: 14pt;
+    color: #ff6b6b;
+    text-align: center;
+    margin-top: -15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.login-error-popup.show {
+    opacity: 1;
+}
+
+/* ============================================ */
+/* 팝업 반응형 디자인 */
+/* ============================================ */
+
+/* 태블릿 */
+@media (max-width: 1024px) {
+    :root {
+        --quiz-moon-size: 720px;
+    }
+
+    .quiz-container {
+        min-height: 100vh;
+        /* 태블릿에서는 콘텐츠를 세로 중앙 정렬해 빈 공간을 줄임 */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .quiz-moon-image {
+        /* 달 이미지를 조금 더 안쪽으로 크게 보여서 여백을 줄임 */
+        right: clamp(-160px, -6vw, -60px);
+    }
+
+    .quiz-main-title {
+        top: 20%;
+        left: 10%;
+    }
+
+    .quiz-subtitle {
+        top: 40%;
+        left: 10%;
+    }
+
+    .quiz-start-btn {
+        top: 58%;
+        left: 10%;
+    }
+
+    .login-glass-box-popup {
+        width: 560px;
+        height: 420px;
+        padding: 40px;
+    }
+    
+    .login-title-popup {
+        font-size: 24pt;
+    }
+    
+    .login-input-popup {
+        height: 56px;
+        font-size: 16pt;
+    }
+    
+    .login-submit-btn-popup {
+        height: 56px;
+        font-size: 18pt;
+    }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+    :root {
+        --quiz-moon-size: 520px;
+    }
+
+    .quiz-container {
+        min-height: 100vh;
+        min-height: 100svh;
+        height: auto;
+        padding: 100px 20px 40px;
+        box-sizing: border-box;
+        /* 모바일에서는 콘텐츠를 세로 중앙 근처로 모아 빈 공간을 줄임 */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        row-gap: 12px;
+    }
+
+    /* 달 이미지는 화면 중앙 쪽으로 이동시켜 배경을 더 꽉 채움 */
+    .quiz-moon-image {
+        top: 50%;
+        right: -30%;
+        transform: translateY(-50%) scaleX(-1);
+        opacity: 0.7;
+    }
+
+    /* 텍스트와 버튼을 문서 흐름 안에서 세로로 배치 */
+    .quiz-main-title,
+    .quiz-subtitle,
+    .quiz-start-btn {
+        position: relative;
+        top: 0;
+        left: 0;
+        max-width: 80%;
+    }
+
+    .quiz-main-title {
+        margin: 0 0 12px;
+        font-size: clamp(28px, 7vw, 36px);
+        text-align: left;
+        padding-right: 8px;
+    }
+
+    .quiz-subtitle {
+        margin: 0 0 20px;
+        font-size: clamp(18px, 5vw, 22px);
+        text-align: left;
+    }
+
+    .quiz-start-btn {
+        margin-top: 4px;
+        left: 0;
+        width: 170px;
+        height: 56px;
+        font-size: 18px;
+        position: relative;
+    }
+
+    .login-popup-content {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login-popup-close {
+        top: 16px;
+        right: 16px;
+        width: 32px;
+        height: 32px;
+        font-size: 26px;
+    }
+    
+    .login-glass-box-popup {
+        width: 90%;
+        max-width: 420px;
+        height: 380px;
+        padding: 30px;
+    }
+    
+    .login-title-popup {
+        font-size: 20pt;
+        margin-bottom: 10px;
+    }
+    
+    .login-form-popup {
+        gap: 20px;
+    }
+    
+    .login-input-popup {
+        height: 52px;
+        font-size: 15pt;
+        padding: 0 20px;
+    }
+    
+    .login-submit-btn-popup {
+        height: 52px;
+        font-size: 17pt;
+    }
+    
+    .login-error-popup {
+        font-size: 12pt;
+    }
+}
+
+/* 초소형 모바일 */
+@media (max-width: 480px) {
+    .login-popup-close {
+        top: 12px;
+        right: 12px;
+        width: 28px;
+        height: 28px;
+        font-size: 22px;
+    }
+    
+    .login-glass-box-popup {
+        width: 90%;
+        height: 320px;
+        border-radius: 24px;
+        padding: 20px;
+    }
+    
+    .login-title-popup {
+        font-size: 18pt;
+    }
+    
+    .login-input-popup {
+        height: 48px;
+        font-size: 14pt;
+        padding: 0 16px;
+    }
+    
+    .login-submit-btn-popup {
+        height: 48px;
+        font-size: 16pt;
+    }
+    
+    .login-error-popup {
+        font-size: 11pt;
+    }
+}
+

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/header.css">
+        <link rel="stylesheet" href="./css/login.css">
+        <title>MOONY_INFO</title>
+    </head>
+    <body>
+        <!-- ============================================ -->
+        <!-- HEADER START - 다른 페이지 복사 시 이 영역만 복사 -->
+        <!-- ============================================ -->
+        
+        <!-- Menu Overlay -->
+        <div class="menu-overlay"></div>
+    
+        <!-- Header -->
+        <header>
+            <div class="head-container">
+            <!-- Logo -->
+            <a href="../index.html" class="header-logo-link">
+                <img src="../img/작은 로고.png" alt="로고" class="header-logo">
+            </a>
+                
+                <!-- Mobile Menu Button -->
+                <button class="menu-btn" aria-label="메뉴">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+    
+            <!-- Navigation -->
+            <nav class="nav">
+                <a href="../sub/sub.html" class="nav-link nav-link-1">달의 위상?</a>
+                <a href="../info/info.html" class="nav-link nav-link-2">다양한 달의 정보</a>
+                <a href="../quiz/quiz.html" class="nav-link nav-link-3">달 관련 퀴즈</a>
+                <a href="../diary/diary.html" class="nav-link nav-link-4">달 관찰 일지 작성</a>
+                <!-- Mobile Login Button (inside nav) -->
+                <button class="login-btn login-btn-mobile" onclick="window.location.href='../login/login.html'">로그인</button>
+                <!-- Mobile Nickname Display -->
+                <div class="user-nickname-mobile" id="userNicknameMobile"></div>
+            </nav>
+
+            <!-- Desktop Login Button -->
+            <button class="login-btn login-btn-desktop" onclick="window.location.href='../login/login.html'">로그인</button>
+            <!-- Desktop Nickname Display -->
+            <div class="user-nickname-desktop" id="userNicknameDesktop"></div>
+            </div>
+        </header>
+        <!-- End Header -->
+    
+        <!-- Header Script -->
+        <script>
+            // Mobile menu toggle
+            const menuBtn = document.querySelector('.menu-btn');
+            const nav = document.querySelector('.nav');
+            const overlay = document.querySelector('.menu-overlay');
+            
+            menuBtn.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                menuBtn.classList.toggle('active');
+                overlay.classList.toggle('active');
+            });
+    
+            // 오버레이 클릭 시 메뉴 닫기
+            overlay.addEventListener('click', () => {
+                nav.classList.remove('active');
+                menuBtn.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            // 닉네임 표시 로직 (데스크톱만)
+            function updateHeaderWithNickname() {
+                const userNickname = localStorage.getItem('userNickname');
+                const loginBtnDesktop = document.querySelector('.login-btn-desktop');
+                const nicknameDesktop = document.getElementById('userNicknameDesktop');
+                
+                if (userNickname) {
+                    // 닉네임이 있으면 데스크톱 로그인 버튼 숨기고 닉네임 표시
+                    loginBtnDesktop.classList.add('hidden');
+                    nicknameDesktop.textContent = userNickname;
+                    nicknameDesktop.classList.add('show');
+                } else {
+                    // 닉네임이 없으면 로그인 버튼 표시
+                    loginBtnDesktop.classList.remove('hidden');
+                    nicknameDesktop.classList.remove('show');
+                }
+            }
+            
+            // 페이지 로드 시 닉네임 확인
+            updateHeaderWithNickname();
+
+            // ===== 사용자 활동 추적 및 자동 로그아웃 (5분) =====
+            let inactivityTimer;
+            const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5분
+
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(() => {
+                    // 5분간 활동이 없으면 닉네임 삭제 및 UI 업데이트
+                    localStorage.removeItem('userNickname');
+                    updateHeaderWithNickname();
+                }, INACTIVITY_TIMEOUT);
+            }
+
+            // 사용자 활동 감지 이벤트들
+            ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'].forEach(event => {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+
+            // 페이지 로드 시 타이머 시작
+            resetInactivityTimer();
+        </script>
+    
+        <!-- ============================================ -->
+        <!-- HEADER END -->
+        <!-- ============================================ -->
+    
+        <!-- 로그인 페이지 컨텐츠 -->
+        <div class="login-container">
+            <!-- 1. 메인 로고 -->
+            <img src="../img/메인페이지 로고(흰색만).png" alt="MOONY 로고" class="login-main-logo">
+            
+            <!-- 2. 초승달 이미지 (배경) -->
+            <img src="../sub/img/초승달.webp" alt="초승달" class="login-moon-image">
+            
+            <!-- 3. 글래스모피즘 도형 -->
+            <div class="login-glass-box">
+                <form class="login-form" id="loginForm">
+                    <!-- 제목 -->
+                    <h1 class="login-title">닉네임을 입력해주세요</h1>
+                    
+                    <!-- 닉네임 입력 필드 -->
+                    <div class="login-input-wrapper">
+                        <input 
+                            type="text" 
+                            class="login-input" 
+                            id="nicknameInput"
+                            placeholder="닉네임#6자리 숫자"
+                            autocomplete="off"
+                        >
+                    </div>
+                    
+                    <!-- 에러 메시지 -->
+                    <div class="login-error" id="loginError">
+                        닉네임 형식이 올바르지 않습니다. (예: moony#123456)
+                    </div>
+                    
+                    <!-- 로그인 버튼 -->
+                    <button type="submit" class="login-submit-btn">로그인</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- 로그인 폼 유효성 검사 스크립트 -->
+        <script>
+            const loginForm = document.getElementById('loginForm');
+            const nicknameInput = document.getElementById('nicknameInput');
+            const loginError = document.getElementById('loginError');
+            
+            // 닉네임 형식 검증 (닉네임#6자리 숫자)
+            function validateNickname(nickname) {
+                const pattern = /^.+#\d{6}$/;
+                return pattern.test(nickname);
+            }
+            
+            // 폼 제출 이벤트
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const nickname = nicknameInput.value.trim();
+                
+                if (validateNickname(nickname)) {
+                    // 유효한 형식이면 다음 페이지로 이동
+                    // 닉네임을 localStorage에 저장 (필요시)
+                    localStorage.setItem('userNickname', nickname);
+                    
+                    // 메인 페이지로 이동 (원하는 페이지로 변경 가능)
+                    window.location.href = '../index.html';
+                } else {
+                    // 에러 메시지 표시
+                    loginError.classList.add('show');
+                    nicknameInput.style.borderColor = 'rgba(255, 107, 107, 0.6)';
+                    
+                    // 3초 후 에러 메시지 숨김
+                    setTimeout(() => {
+                        loginError.classList.remove('show');
+                        nicknameInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                    }, 3000);
+                }
+            });
+            
+            // 입력 필드 변경 시 에러 메시지 숨김
+            nicknameInput.addEventListener('input', function() {
+                if (loginError.classList.contains('show')) {
+                    loginError.classList.remove('show');
+                    nicknameInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                }
+            });
+        </script>
+    
+</body>
+</html>

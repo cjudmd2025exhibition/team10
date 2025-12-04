@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+            <link rel="stylesheet" href="../../css/style.css">
+            <link rel="stylesheet" href="../../css/header.css">
+            <link rel="stylesheet" href="./css/quizresult.css">
+            <title>MOONY_question</title>
+        </head>
+        <body>
+            <!-- ============================================ -->
+            <!-- HEADER START - 다른 페이지 복사 시 이 영역만 복사 -->
+            <!-- ============================================ -->
+            
+            <!-- Menu Overlay -->
+            <div class="menu-overlay"></div>
+        
+            <!-- Header -->
+            <header>
+                <div class="head-container">
+                <!-- Logo -->
+                <a href="../../index.html" class="header-logo-link">
+                    <img src="../../img/작은 로고.png" alt="로고" class="header-logo">
+                </a>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button class="menu-btn" aria-label="메뉴">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+        
+                <!-- Navigation -->
+                <nav class="nav">
+                    <a href="../../sub/sub.html" class="nav-link nav-link-1">달의 위상?</a>
+                    <a href="../../info/info.html" class="nav-link nav-link-2">다양한 달의 정보</a>
+                    <a href="../../quiz/quiz.html" class="nav-link nav-link-3">달 관련 퀴즈</a>
+                    <a href="../../diary/diary.html" class="nav-link nav-link-4">달 관찰 일지 작성</a>
+                    <!-- Mobile Login Button (inside nav) -->
+                    <button class="login-btn login-btn-mobile" onclick="window.location.href='../../login/login.html'">로그인</button>
+                    <!-- Mobile Nickname Display -->
+                    <div class="user-nickname-mobile" id="userNicknameMobile"></div>
+                </nav>
+    
+                <!-- Desktop Login Button -->
+                <button class="login-btn login-btn-desktop" onclick="window.location.href='../../login/login.html'">로그인</button>
+                <!-- Desktop Nickname Display -->
+                <div class="user-nickname-desktop" id="userNicknameDesktop"></div>
+                </div>
+            </header>
+            <!-- End Header -->
+        
+            <!-- Header Script -->
+            <script>
+                // Mobile menu toggle
+                const menuBtn = document.querySelector('.menu-btn');
+                const nav = document.querySelector('.nav');
+                const overlay = document.querySelector('.menu-overlay');
+                
+                menuBtn.addEventListener('click', () => {
+                    nav.classList.toggle('active');
+                    menuBtn.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                });
+        
+                // 오버레이 클릭 시 메뉴 닫기
+                overlay.addEventListener('click', () => {
+                    nav.classList.remove('active');
+                    menuBtn.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+
+                // 닉네임 표시 로직 (데스크톱만)
+                function updateHeaderWithNickname() {
+                    const userNickname = localStorage.getItem('userNickname');
+                    const loginBtnDesktop = document.querySelector('.login-btn-desktop');
+                    const nicknameDesktop = document.getElementById('userNicknameDesktop');
+                    
+                    if (userNickname) {
+                        // 닉네임이 있으면 데스크톱 로그인 버튼 숨기고 닉네임 표시
+                        loginBtnDesktop.classList.add('hidden');
+                        nicknameDesktop.textContent = userNickname;
+                        nicknameDesktop.classList.add('show');
+                    } else {
+                        // 닉네임이 없으면 로그인 버튼 표시
+                        loginBtnDesktop.classList.remove('hidden');
+                        nicknameDesktop.classList.remove('show');
+                    }
+                }
+                
+                // 페이지 로드 시 닉네임 확인
+                updateHeaderWithNickname();
+
+                // ===== 사용자 활동 추적 및 자동 로그아웃 (5분) =====
+                let inactivityTimer;
+                const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5분
+
+                function resetInactivityTimer() {
+                    clearTimeout(inactivityTimer);
+                    inactivityTimer = setTimeout(() => {
+                        // 5분간 활동이 없으면 닉네임 삭제 및 UI 업데이트
+                        localStorage.removeItem('userNickname');
+                        updateHeaderWithNickname();
+                        if (typeof updateLogoutButton === 'function') {
+                            updateLogoutButton();
+                        }
+                    }, INACTIVITY_TIMEOUT);
+                }
+
+                // 사용자 활동 감지 이벤트들
+                ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'].forEach(event => {
+                    document.addEventListener(event, resetInactivityTimer, true);
+                });
+
+                // 페이지 로드 시 타이머 시작
+                resetInactivityTimer();
+            </script>
+        
+            <!-- ============================================ -->
+            <!-- HEADER END -->
+            <!-- ============================================ -->
+
+            <!-- 로그아웃 버튼 (닉네임이 있을 때만 표시) -->
+            <button class="logout-btn" id="logoutBtn" onclick="handleLogout()" aria-label="로그아웃">
+                <span>&times;</span>
+            </button>
+
+            <script>
+                // 로그아웃 버튼 표시/숨김 업데이트
+                function updateLogoutButton() {
+                    const userNickname = localStorage.getItem('userNickname');
+                    const logoutBtn = document.getElementById('logoutBtn');
+                    
+                    if (userNickname) {
+                        logoutBtn.classList.add('show');
+                    } else {
+                        logoutBtn.classList.remove('show');
+                    }
+                }
+
+                // 로그아웃 처리
+                function handleLogout() {
+                    if (confirm('로그아웃 하시겠습니까?')) {
+                        localStorage.removeItem('userNickname');
+                        updateHeaderWithNickname();
+                        updateLogoutButton();
+                    }
+                }
+
+                // 페이지 로드 시 로그아웃 버튼 상태 업데이트
+                updateLogoutButton();
+            </script>
+
+            <!-- Quiz Result Content -->
+            <main class="result-container">
+                <!-- 1. 제목 텍스트 -->
+                <h1 class="result-title">
+                    <span class="moony-text">
+                        <img src="../../img/MOONY.webp" alt="MOONY 로고">
+                    </span>
+                    <span class="title-text"> 로<br>많이 공부하셨네요!</span>
+                </h1>
+
+                <!-- 2. 서브 텍스트 -->
+                <p class="result-subtitle">다음에는 더 잘 할 수 있을거에요!</p>
+
+                <!-- 3. 버튼 컴포넌트 -->
+                <button class="ranking-btn">
+                    <span>랭킹 확인하기</span>
+                </button>
+
+                <!-- 4-9. 점수 및 랭킹 표시 -->
+                <div class="stats-container">
+                    <!-- 4. 점수 -->
+                    <div class="stat-item stat-score">
+                        <p class="stat-value">10</p>
+                        <p class="stat-label">점수</p>
+                    </div>
+
+                    <!-- 5. 전체 랭킹 -->
+                    <div class="stat-item stat-total-rank">
+                        <p class="stat-value">381</p>
+                        <p class="stat-label">전체 랭킹</p>
+                    </div>
+
+                    <!-- 6. 오늘의 랭킹 -->
+                    <div class="stat-item stat-today-rank">
+                        <p class="stat-value">53</p>
+                        <p class="stat-label">오늘의 랭킹</p>
+                    </div>
+                </div>
+
+                <!-- 데스크톱/태블릿용 인라인 랭킹 영역 (기본 숨김) -->
+                <div class="ranking-section ranking-inline-section" id="rankingSection" style="display: none;">
+                    <h2 class="ranking-title">전체 랭킹</h2>
+                    <div class="ranking-table-container">
+                        <table class="ranking-table">
+                            <thead>
+                                <tr>
+                                    <th>등수</th>
+                                    <th>닉네임</th>
+                                    <th>점수</th>
+                                    <th>날짜 및 시간</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rankingTableBody">
+                                <!-- 랭킹 데이터가 여기에 동적으로 추가됩니다 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 추가 학습 추천 영역 -->
+                <!-- 1. 추천 텍스트 -->
+                <p class="study-recommend-text">좀 더 공부하는건 어때요?</p>
+
+                <!-- 2. 학습 카드 -->
+                <div class="study-card study-card-1">
+                    <div class="study-card-inner">
+                        <!-- 카드 앞면 -->
+                        <div class="study-card-front">
+                            <p class="study-card-text">달이 혼자서<br>해내는 현상</p>
+                        </div>
+                        <!-- 카드 뒷면 -->
+                        <div class="study-card-back">
+                            <div class="study-card-back-bg"></div>
+                            <p class="study-card-text">달이 혼자서<br>해내는 현상</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. 학습 카드 2 -->
+                <div class="study-card study-card-2">
+                    <div class="study-card-inner">
+                        <!-- 카드 앞면 -->
+                        <div class="study-card-front">
+                            <p class="study-card-text">달 때문에 지구에게는<br>어떤 일이 일어날까?</p>
+                        </div>
+                        <!-- 카드 뒷면 -->
+                        <div class="study-card-back">
+                            <div class="study-card-back-bg"></div>
+                            <p class="study-card-text">달 때문에 지구에게는<br>어떤 일이 일어날까?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. 학습 카드 3 -->
+                <div class="study-card study-card-3">
+                    <div class="study-card-inner">
+                        <!-- 카드 앞면 -->
+                        <div class="study-card-front">
+                            <p class="study-card-text">달의 다른 이야기는<br>어떤게 있을까?</p>
+                        </div>
+                        <!-- 카드 뒷면 -->
+                        <div class="study-card-back">
+                            <div class="study-card-back-bg"></div>
+                            <p class="study-card-text">달의 다른 이야기는<br>어떤게 있을까?</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- 모바일용 랭킹 모달 (독립 창) -->
+            <div class="ranking-modal-overlay" id="rankingModal">
+                <div class="ranking-modal-content">
+                    <button class="ranking-modal-close" id="rankingModalClose" aria-label="랭킹 창 닫기">&times;</button>
+
+                    <div class="ranking-section ranking-modal-section" id="rankingModalSection">
+                        <h2 class="ranking-title">전체 랭킹</h2>
+                        <div class="ranking-table-container">
+                            <table class="ranking-table">
+                                <thead>
+                                    <tr>
+                                        <th>등수</th>
+                                        <th>닉네임</th>
+                                        <th>점수</th>
+                                        <th>날짜 및 시간</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rankingModalTableBody">
+                                    <!-- 랭킹 데이터가 여기에 동적으로 추가됩니다 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <script src="./js/quizresult.js"></script>
+        
+        <!-- 랭킹/학습 토글 스크립트 -->
+        <script>
+            const rankingBtn = document.querySelector('.ranking-btn');
+            const studyRecommendText = document.querySelector('.study-recommend-text');
+            const studyCards = document.querySelectorAll('.study-card');
+            const rankingSection = document.getElementById('rankingSection');           // 인라인 랭킹 영역
+            const rankingModalSection = document.getElementById('rankingModalSection'); // 모달 랭킹 영역
+            
+            // 랭킹 데이터 관리 (localStorage 사용)
+            function saveQuizResult(nickname, score) {
+                const rankings = JSON.parse(localStorage.getItem('quizRankings') || '[]');
+                const now = new Date();
+                
+                rankings.push({
+                    nickname: nickname,
+                    score: score,
+                    date: now.toISOString(),
+                    timestamp: now.getTime()
+                });
+                
+                // 점수 높은 순으로 정렬
+                rankings.sort((a, b) => b.score - a.score || a.timestamp - b.timestamp);
+                
+                localStorage.setItem('quizRankings', JSON.stringify(rankings));
+            }
+            
+            // 랭킹 표시
+            function displayRankings() {
+                const rankings = JSON.parse(localStorage.getItem('quizRankings') || '[]');
+                const tableBodies = [
+                    document.getElementById('rankingTableBody'),
+                    document.getElementById('rankingModalTableBody')
+                ].filter(Boolean);
+
+                tableBodies.forEach((tbody) => {
+                    tbody.innerHTML = '';
+                    
+                    if (rankings.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px;">아직 랭킹 데이터가 없습니다.</td></tr>';
+                        return;
+                    }
+                    
+                    rankings.forEach((rank, index) => {
+                        const date = new Date(rank.date);
+                        const dateStr = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+                        const timeStr = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="rank-number">${index + 1}</td>
+                            <td class="rank-nickname">${rank.nickname}</td>
+                            <td class="rank-score">${rank.score}</td>
+                            <td class="rank-date">${dateStr} ${timeStr}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                });
+            }
+            
+            // 버튼 클릭 이벤트: 데스크톱/태블릿 → 인라인 토글, 모바일 → 모달
+            rankingBtn.addEventListener('click', function() {
+                const isMobile = window.matchMedia('(max-width: 768px)').matches;
+                const btnText = this.querySelector('span');
+
+                if (isMobile) {
+                    // 모바일: 모달로 랭킹 표시
+                    displayRankings();
+                    openRankingModal();
+                    return;
+                }
+
+                // 데스크톱/태블릿: 인라인 랭킹 ↔ 학습 카드 토글
+                if (btnText.textContent === '랭킹 확인하기') {
+                    btnText.textContent = '더 공부하기';
+
+                    // 학습 카드 숨김
+                    if (studyRecommendText) {
+                        studyRecommendText.style.display = 'none';
+                    }
+                    studyCards.forEach(card => card.style.display = 'none');
+
+                    // 랭킹 섹션 표시
+                    displayRankings();
+                    if (rankingSection) {
+                        rankingSection.style.display = 'block';
+                        rankingSection.style.opacity = '1';
+                    }
+                } else {
+                    btnText.textContent = '랭킹 확인하기';
+
+                    // 랭킹 섹션 숨김
+                    if (rankingSection) {
+                        rankingSection.style.opacity = '0';
+                        setTimeout(() => {
+                            rankingSection.style.display = 'none';
+                        }, 300);
+                    }
+
+                    // 학습 카드 다시 표시
+                    if (studyRecommendText) {
+                        studyRecommendText.style.display = 'block';
+                    }
+                    studyCards.forEach(card => card.style.display = 'block');
+                }
+            });
+
+            const rankingModal = document.getElementById('rankingModal');
+            const rankingModalClose = document.getElementById('rankingModalClose');
+
+            function openRankingModal() {
+                rankingModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeRankingModal() {
+                rankingModal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            // 모달 닫기 버튼
+            rankingModalClose.addEventListener('click', closeRankingModal);
+
+            // 오버레이 바깥 영역 클릭 시 닫기
+            rankingModal.addEventListener('click', (e) => {
+                if (e.target === rankingModal) {
+                    closeRankingModal();
+                }
+            });
+            
+            // 페이지 로드 시 현재 사용자의 퀴즈 결과 저장
+            window.addEventListener('load', function() {
+                const userNickname = localStorage.getItem('userNickname');
+                if (userNickname) {
+                    // 페이지에 표시된 실제 점수 가져오기
+                    const scoreElement = document.querySelector('.stat-score .stat-value');
+                    const score = scoreElement ? parseInt(scoreElement.textContent) : 0;
+                    
+                    // 중복 저장 방지: 같은 닉네임의 최근 기록 확인
+                    const rankings = JSON.parse(localStorage.getItem('quizRankings') || '[]');
+                    const now = new Date().getTime();
+                    const recentRecord = rankings.find(r => 
+                        r.nickname === userNickname && 
+                        (now - r.timestamp) < 60000 // 1분 이내
+                    );
+                    
+                    // 최근 기록이 없거나 점수가 다르면 저장
+                    if (!recentRecord || recentRecord.score !== score) {
+                        saveQuizResult(userNickname, score);
+                    }
+                }
+            });
+            
+            // CSS transition 추가
+            const style = document.createElement('style');
+            style.textContent = `
+                .study-recommend-text,
+                .study-card,
+                .ranking-section {
+                    transition: opacity 0.3s ease;
+                }
+            `;
+            document.head.appendChild(style);
+        </script>
+</body>
+</html>
